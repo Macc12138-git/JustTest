@@ -1,0 +1,47 @@
+# Unity generated directories
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# CodeGraph local index
+.codegraph/
+
+# IDE and generated project files
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity-generated metadata for IDE artifacts
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Unity crash reports and build artifacts
+sysinfo.txt
+crashlytics-build.properties
+
+# Asset Store tooling
+/Assets/AssetStoreTools*
+
+# Operating system files
+.DS_Store
+Thumbs.db
