@@ -14,6 +14,10 @@ namespace JustTest.Game.Combat
 
         public event Action<HitResult> HitResolved;
 
+        internal event Action<HitResolution> HitProcessed;
+
+        internal event Action CombatStateReset;
+
         public CombatFaction Faction => definition != null ? definition.Faction : CombatFaction.None;
 
         public HealthComponent Health => health;
@@ -56,6 +60,7 @@ namespace JustTest.Game.Combat
                     health != null ? health.CurrentHealth : 0f,
                     false);
                 HitResolved?.Invoke(invalidResult);
+                HitProcessed?.Invoke(new HitResolution(request, invalidResult));
                 return invalidResult;
             }
 
@@ -78,6 +83,7 @@ namespace JustTest.Game.Combat
             }
 
             HitResolved?.Invoke(result);
+            HitProcessed?.Invoke(new HitResolution(request, result));
             return result;
         }
 
@@ -90,6 +96,7 @@ namespace JustTest.Game.Combat
 
             invulnerability.ClearAll();
             health.RestoreToFull();
+            CombatStateReset?.Invoke();
         }
     }
 }

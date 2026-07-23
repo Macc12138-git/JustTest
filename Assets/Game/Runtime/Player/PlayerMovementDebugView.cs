@@ -12,10 +12,13 @@ namespace JustTest.Game.Player
 
         private void Awake()
         {
-            movementController = movementController != null
-                ? movementController
-                : GetComponent<PlayerMovementController>();
-            groundProbe = groundProbe != null ? groundProbe : GetComponent<PlayerGroundProbe2D>();
+            if (movementController != null && groundProbe != null && config != null)
+            {
+                return;
+            }
+
+            Debug.LogError($"{nameof(PlayerMovementDebugView)} is missing an Inspector reference.", this);
+            enabled = false;
         }
 
         private void Update()
@@ -59,11 +62,6 @@ namespace JustTest.Game.Player
 
         private void OnDrawGizmosSelected()
         {
-            if (groundProbe == null)
-            {
-                groundProbe = GetComponent<PlayerGroundProbe2D>();
-            }
-
             if (groundProbe == null || config == null || !config.DrawGroundProbe)
             {
                 return;

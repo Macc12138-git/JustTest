@@ -5,27 +5,27 @@ using UnityEngine;
 namespace JustTest.Game.Player
 {
     [DefaultExecutionOrder(-50)]
-    [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
     public sealed class PlayerMovementController : MonoBehaviour
     {
         [SerializeField] private PlayerMovementConfig config;
         [SerializeField] private PlayerInputReader inputReader;
         [SerializeField] private PlayerGroundProbe2D groundProbe;
         [SerializeField] private PlayerRollController rollController;
+        [SerializeField] private Rigidbody2D body;
+        [SerializeField] private Collider2D bodyCollider;
 
-        private Rigidbody2D body;
-        private Collider2D bodyCollider;
+        private readonly PlayerControlLockState controlLocks = new PlayerControlLockState();
         private Collider2D ignoredPlatform;
         private Coroutine restorePlatformCollisionRoutine;
         private float lastGroundedTime = float.NegativeInfinity;
-        private bool controlLocked;
         private bool droppingThroughPlatform;
         private bool ready;
 
         public bool IsGrounded => ready && groundProbe.IsGrounded && !droppingThroughPlatform;
         public bool IsRolling => ready && rollController.IsRolling;
         public bool IsInvulnerable => ready && rollController.IsInvulnerable;
-        public bool CanStartAction => ready && !controlLocked && !IsRolling;
+        public bool CanStartAction => ready && !controlLocks.IsLocked && !IsRolling;
+        public bool IsControlLocked => controlLocks.IsLocked;
         public int FacingDirection { get; private set; } = 1;
         public Vector2 Velocity => body != null ? body.velocity : Vector2.zero;
 
@@ -34,7 +34,7 @@ namespace JustTest.Game.Player
             get
             {
                 if (!ready) return "Not Ready";
-                if (controlLocked) return "Control Locked";
+                if (controlLocks.IsLocked) return $"Control Locked ({controlLocks.ActiveSources})";
                 if (IsRolling) return IsInvulnerable ? "Rolling (Invulnerable)" : "Rolling";
                 if (droppingThroughPlatform) return "Dropping Through";
                 return IsGrounded ? "Grounded" : "Airborne";
@@ -43,13 +43,13 @@ namespace JustTest.Game.Player
 
         private void Awake()
         {
-            body = GetComponent<Rigidbody2D>();
-            bodyCollider = GetComponent<Collider2D>();
-            inputReader = inputReader != null ? inputReader : GetComponent<PlayerInputReader>();
-            groundProbe = groundProbe != null ? groundProbe : GetComponent<PlayerGroundProbe2D>();
-            rollController = rollController != null ? rollController : GetComponent<PlayerRollController>();
-
-            ready = config != null && inputReader != null && groundProbe != null && rollController != null;
+            ready =
+                config != null &&
+                inputReader != null &&
+                groundProbe != null &&
+                rollController != null &&
+                body != null &&
+                bodyCollider != null;
             if (ready)
             {
                 return;
@@ -79,14 +79,14 @@ namespace JustTest.Game.Player
                 return;
             }
 
-            bool canStartRoll = !controlLocked && IsGrounded;
+            bool canStartRoll = !controlLocks.IsLocked && IsGrounded;
             if (rollController.TryStart(inputReader, timestamp, canStartRoll, FacingDirection))
             {
                 SimulateRoll(deltaTime);
                 return;
             }
 
-            if (!controlLocked)
+            if (!controlLocks.IsLocked)
             {
                 TryStartDropThrough(timestamp);
                 TryStartJump(timestamp);
@@ -101,13 +101,28 @@ namespace JustTest.Game.Player
             RestoreIgnoredPlatformCollision();
         }
 
-        public void SetControlLocked(bool locked)
+        internal void SetControlLock(PlayerControlLockSource source, bool active)
         {
-            controlLocked = locked;
-            if (locked && inputReader != null)
+            bool wasLocked = controlLocks.IsLocked;
+            if (!controlLocks.Set(source, active))
+            {
+                return;
+            }
+
+            if (!wasLocked && controlLocks.IsLocked && inputReader != null)
             {
                 inputReader.ClearBufferedActions();
             }
+        }
+
+        internal void ClearControlLocks()
+        {
+            controlLocks.Clear();
+        }
+
+        internal void CancelRoll()
+        {
+            rollController?.Cancel();
         }
 
         public void ApplyExternalVelocity(Vector2 velocity)
@@ -243,7 +258,7 @@ namespace JustTest.Game.Player
 
         private void SimulateHorizontalMovement(float deltaTime)
         {
-            float horizontalInput = controlLocked ? 0f : inputReader.Horizontal;
+            float horizontalInput = controlLocks.IsLocked ? 0f : inputReader.Horizontal;
             bool hasInput = Mathf.Abs(horizontalInput) > 0.01f;
             bool grounded = IsGrounded;
             float maximumSpeed = grounded ? config.MaxGroundSpeed : config.MaxAirSpeed;

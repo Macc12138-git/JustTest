@@ -8,11 +8,32 @@ namespace JustTest.Game.Combat
             CombatFaction sourceFaction,
             float damage,
             bool allowFriendlyFire = false)
+            : this(
+                attackInstanceId,
+                sourceId,
+                sourceFaction,
+                damage,
+                1,
+                default,
+                allowFriendlyFire)
+        {
+        }
+
+        public HitRequest(
+            int attackInstanceId,
+            int sourceId,
+            CombatFaction sourceFaction,
+            float damage,
+            int attackDirection,
+            HitReactionData reaction,
+            bool allowFriendlyFire = false)
         {
             AttackInstanceId = attackInstanceId;
             SourceId = sourceId;
             SourceFaction = sourceFaction;
             Damage = damage;
+            AttackDirection = attackDirection;
+            Reaction = reaction;
             AllowFriendlyFire = allowFriendlyFire;
         }
 
@@ -24,14 +45,20 @@ namespace JustTest.Game.Combat
 
         public float Damage { get; }
 
+        public int AttackDirection { get; }
+
+        public HitReactionData Reaction { get; }
+
         public bool AllowFriendlyFire { get; }
 
         internal bool IsValid =>
             AttackInstanceId != 0 &&
             SourceId != 0 &&
             SourceFaction != CombatFaction.None &&
+            (AttackDirection == -1 || AttackDirection == 1) &&
             Damage > 0f &&
             !float.IsNaN(Damage) &&
-            !float.IsInfinity(Damage);
+            !float.IsInfinity(Damage) &&
+            Reaction.IsValid;
     }
 }

@@ -9,6 +9,8 @@ namespace JustTest.Game.Combat
         private readonly int sourceId;
         private readonly CombatFaction sourceFaction;
         private readonly float damage;
+        private readonly int attackDirection;
+        private readonly HitReactionData reaction;
         private readonly bool allowFriendlyFire;
 
         internal AttackInstance(
@@ -16,12 +18,16 @@ namespace JustTest.Game.Combat
             int sourceId,
             CombatFaction sourceFaction,
             float damage,
+            int attackDirection,
+            HitReactionData reaction,
             bool allowFriendlyFire)
         {
             InstanceId = instanceId;
             this.sourceId = sourceId;
             this.sourceFaction = sourceFaction;
             this.damage = damage;
+            this.attackDirection = attackDirection;
+            this.reaction = reaction.ToWorld(attackDirection);
             this.allowFriendlyFire = allowFriendlyFire;
         }
 
@@ -63,6 +69,8 @@ namespace JustTest.Game.Combat
                 sourceId,
                 sourceFaction,
                 damage,
+                attackDirection,
+                reaction,
                 allowFriendlyFire);
             return Publish(target.ReceiveHit(request));
         }

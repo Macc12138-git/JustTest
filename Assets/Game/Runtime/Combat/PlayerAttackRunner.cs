@@ -112,6 +112,8 @@ namespace JustTest.Game.Combat
                 GetInstanceID(),
                 CombatFaction.Player,
                 attackDefinition.Damage,
+                movementController.FacingDirection,
+                attackDefinition.HitReaction,
                 attackDefinition.AllowFriendlyFire);
             activeAttack.HitResolved += OnAttackHitResolved;
             timeline.Start();

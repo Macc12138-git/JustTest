@@ -10,6 +10,8 @@ namespace JustTest.Game.Combat
         [SerializeField, Min(0.01f)] private float activeDuration = 0.12f;
         [SerializeField, Min(0.01f)] private float recoveryDuration = 0.2f;
         [SerializeField, Min(0f)] private float inputBufferDuration = 0.1f;
+        [SerializeField, Min(0f)] private float hitStunDuration = 0.2f;
+        [SerializeField] private Vector2 knockbackVelocity = new Vector2(4f, 1.5f);
         [SerializeField] private bool allowFriendlyFire;
 
         internal float Damage => damage;
@@ -22,6 +24,10 @@ namespace JustTest.Game.Combat
 
         internal float InputBufferDuration => inputBufferDuration;
 
+        internal HitReactionData HitReaction => new HitReactionData(
+            hitStunDuration,
+            knockbackVelocity);
+
         internal bool AllowFriendlyFire => allowFriendlyFire;
 
         private void OnValidate()
@@ -31,6 +37,20 @@ namespace JustTest.Game.Combat
             activeDuration = Mathf.Max(0.01f, activeDuration);
             recoveryDuration = Mathf.Max(0.01f, recoveryDuration);
             inputBufferDuration = Mathf.Max(0f, inputBufferDuration);
+            hitStunDuration = SanitizeNonNegative(hitStunDuration);
+            knockbackVelocity = new Vector2(
+                SanitizeFinite(knockbackVelocity.x),
+                SanitizeFinite(knockbackVelocity.y));
+        }
+
+        private static float SanitizeNonNegative(float value)
+        {
+            return Mathf.Max(0f, SanitizeFinite(value));
+        }
+
+        private static float SanitizeFinite(float value)
+        {
+            return float.IsNaN(value) || float.IsInfinity(value) ? 0f : value;
         }
     }
 }

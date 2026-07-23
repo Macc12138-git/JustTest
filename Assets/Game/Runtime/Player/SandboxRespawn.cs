@@ -16,10 +16,6 @@ namespace JustTest.Game.Player
 
         private void Awake()
         {
-            movementController = movementController != null
-                ? movementController
-                : GetComponent<PlayerMovementController>();
-            inputReader = inputReader != null ? inputReader : GetComponent<PlayerInputReader>();
             fallbackRespawnPosition = transform.position;
 
             if (movementController == null || inputReader == null || debugConfig == null)

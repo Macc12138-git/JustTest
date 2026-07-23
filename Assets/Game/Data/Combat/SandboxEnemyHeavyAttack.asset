@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3380430e6c384cdf930986dc47e44ff, type: 3}
-  m_Name: PrototypeBasicAttack
+  m_Name: SandboxEnemyHeavyAttack
   m_EditorClassIdentifier: 
   damage: 20
-  windupDuration: 0.08
+  windupDuration: 0.25
   activeDuration: 0.12
-  recoveryDuration: 0.2
+  recoveryDuration: 0.4
   inputBufferDuration: 0.1
-  hitStunDuration: 0.2
-  knockbackVelocity: {x: 4, y: 1.5}
+  hitStunDuration: 0.35
+  knockbackVelocity: {x: 7, y: 3}
   allowFriendlyFire: 0

@@ -12,6 +12,23 @@ namespace JustTest.Game.Combat
             float damage,
             bool allowFriendlyFire = false)
         {
+            return Create(
+                sourceId,
+                sourceFaction,
+                damage,
+                1,
+                default,
+                allowFriendlyFire);
+        }
+
+        internal AttackInstance Create(
+            int sourceId,
+            CombatFaction sourceFaction,
+            float damage,
+            int attackDirection,
+            HitReactionData reaction,
+            bool allowFriendlyFire = false)
+        {
             if (sourceId == 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(sourceId));
@@ -27,6 +44,16 @@ namespace JustTest.Game.Combat
                 throw new ArgumentOutOfRangeException(nameof(damage));
             }
 
+            if (attackDirection != -1 && attackDirection != 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(attackDirection));
+            }
+
+            if (!reaction.IsValid)
+            {
+                throw new ArgumentOutOfRangeException(nameof(reaction));
+            }
+
             int instanceId = nextInstanceId;
             nextInstanceId = nextInstanceId == int.MaxValue ? 1 : nextInstanceId + 1;
             return new AttackInstance(
@@ -34,6 +61,8 @@ namespace JustTest.Game.Combat
                 sourceId,
                 sourceFaction,
                 damage,
+                attackDirection,
+                reaction,
                 allowFriendlyFire);
         }
     }

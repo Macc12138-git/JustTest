@@ -2,13 +2,12 @@ using UnityEngine;
 
 namespace JustTest.Game.Player
 {
-    [RequireComponent(typeof(Collider2D))]
     public sealed class PlayerGroundProbe2D : MonoBehaviour
     {
         [SerializeField] private PlayerMovementConfig config;
+        [SerializeField] private Collider2D bodyCollider;
 
         private readonly RaycastHit2D[] castResults = new RaycastHit2D[8];
-        private Collider2D bodyCollider;
         private ContactFilter2D contactFilter;
 
         internal bool IsGrounded { get; private set; }
@@ -19,11 +18,9 @@ namespace JustTest.Game.Player
 
         private void Awake()
         {
-            bodyCollider = GetComponent<Collider2D>();
-
-            if (config == null)
+            if (config == null || bodyCollider == null)
             {
-                Debug.LogError($"{nameof(PlayerGroundProbe2D)} requires a movement config.", this);
+                Debug.LogError($"{nameof(PlayerGroundProbe2D)} is missing an Inspector reference.", this);
                 enabled = false;
                 return;
             }

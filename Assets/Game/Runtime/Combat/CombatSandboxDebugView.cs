@@ -6,6 +6,9 @@ namespace JustTest.Game.Combat
     {
         [SerializeField] private PlayerAttackRunner attackRunner;
         [SerializeField] private HealthComponent targetHealth;
+        [SerializeField] private HealthComponent playerHealth;
+        [SerializeField] private InvulnerabilityController playerInvulnerability;
+        [SerializeField] private CombatReactionReceiver playerReaction;
         [SerializeField] private CombatDebugConfig config;
 
         private HitOutcome lastOutcome;
@@ -15,7 +18,13 @@ namespace JustTest.Game.Combat
 
         private void Awake()
         {
-            ready = attackRunner != null && targetHealth != null && config != null;
+            ready =
+                attackRunner != null &&
+                targetHealth != null &&
+                playerHealth != null &&
+                playerInvulnerability != null &&
+                playerReaction != null &&
+                config != null;
             if (ready)
             {
                 return;
@@ -59,7 +68,11 @@ namespace JustTest.Game.Combat
                 $"Attack: {attackRunner.Phase}\n" +
                 $"Attack ID: {attackRunner.CurrentAttackInstanceId}\n" +
                 $"Last Hit: {outcomeText}\n" +
-                $"Target HP: {targetHealth.CurrentHealth:0}/{targetHealth.MaximumHealth:0}";
+                $"Target HP: {targetHealth.CurrentHealth:0}/{targetHealth.MaximumHealth:0}\n" +
+                $"Player HP: {playerHealth.CurrentHealth:0}/{playerHealth.MaximumHealth:0}\n" +
+                $"Reaction: {(playerReaction.IsReacting ? $"{playerReaction.RemainingDuration:0.00}s" : "None")}\n" +
+                $"Invulnerable: {playerInvulnerability.IsInvulnerable}\n" +
+                $"Enemy Attack: {config.NormalEnemyAttackKey}=Normal, {config.HeavyEnemyAttackKey}=Heavy";
             GUI.Label(
                 new Rect(config.OverlayPosition, config.OverlaySize),
                 text,

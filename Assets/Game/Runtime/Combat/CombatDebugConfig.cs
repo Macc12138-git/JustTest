@@ -8,15 +8,21 @@ namespace JustTest.Game.Combat
         [SerializeField] private bool showOverlay = true;
         [SerializeField] private bool logHitResults;
         [SerializeField] private bool allowManualReset = true;
+        [SerializeField] private KeyCode normalEnemyAttackKey = KeyCode.U;
+        [SerializeField] private KeyCode heavyEnemyAttackKey = KeyCode.I;
         [SerializeField, Range(10, 32)] private int overlayFontSize = 18;
         [SerializeField] private Vector2 overlayPosition = new Vector2(16f, 128f);
-        [SerializeField] private Vector2 overlaySize = new Vector2(340f, 140f);
+        [SerializeField] private Vector2 overlaySize = new Vector2(420f, 210f);
 
         internal bool ShowOverlay => showOverlay;
 
         internal bool LogHitResults => logHitResults;
 
         internal bool AllowManualReset => allowManualReset;
+
+        internal KeyCode NormalEnemyAttackKey => normalEnemyAttackKey;
+
+        internal KeyCode HeavyEnemyAttackKey => heavyEnemyAttackKey;
 
         internal int OverlayFontSize => overlayFontSize;
 

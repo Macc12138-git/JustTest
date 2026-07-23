@@ -1,5 +1,6 @@
 using JustTest.Game.Combat;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace JustTest.Game.Tests
 {
@@ -99,6 +100,25 @@ namespace JustTest.Game.Tests
             Assert.That(secondAttack.InstanceId, Is.EqualTo(firstAttack.InstanceId + 1));
         }
 
+        [Test]
+        public void TryHit_TransformsKnockbackIntoAttackDirection()
+        {
+            HitReactionData reaction = new HitReactionData(0.35f, new Vector2(7f, 3f));
+            AttackInstance attack = factory.Create(
+                100,
+                CombatFaction.Player,
+                25f,
+                -1,
+                reaction);
+            FakeHitTarget target = new FakeHitTarget(200, 100f);
+
+            attack.TryHit(target);
+
+            Assert.That(target.LastRequest.AttackDirection, Is.EqualTo(-1));
+            Assert.That(target.LastRequest.Reaction.HitStunDuration, Is.EqualTo(0.35f));
+            Assert.That(target.LastRequest.Reaction.KnockbackVelocity, Is.EqualTo(new Vector2(-7f, 3f)));
+        }
+
         [TestCase(0, CombatFaction.Player, 10f)]
         [TestCase(100, CombatFaction.None, 10f)]
         [TestCase(100, CombatFaction.Player, 0f)]
@@ -136,9 +156,12 @@ namespace JustTest.Game.Tests
 
             internal int ReceiveCount { get; private set; }
 
+            internal HitRequest LastRequest { get; private set; }
+
             public HitResult ReceiveHit(in HitRequest request)
             {
                 ReceiveCount++;
+                LastRequest = request;
                 float appliedDamage = Outcome == HitOutcome.Applied
                     ? System.Math.Min(CurrentHealth, request.Damage)
                     : 0f;
