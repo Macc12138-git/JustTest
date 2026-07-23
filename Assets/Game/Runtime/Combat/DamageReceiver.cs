@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace JustTest.Game.Combat
 {
-    public sealed class DamageReceiver : MonoBehaviour
+    public sealed class DamageReceiver : MonoBehaviour, IHitTarget
     {
         [SerializeField] private CombatantDefinition definition;
         [SerializeField] private HealthComponent health;
@@ -19,6 +19,10 @@ namespace JustTest.Game.Combat
         public HealthComponent Health => health;
 
         public InvulnerabilityController Invulnerability => invulnerability;
+
+        int IHitTarget.TargetId => this != null ? GetInstanceID() : 0;
+
+        float IHitTarget.CurrentHealth => health != null ? health.CurrentHealth : 0f;
 
         private void Awake()
         {
