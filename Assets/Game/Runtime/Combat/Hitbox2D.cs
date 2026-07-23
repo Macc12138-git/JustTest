@@ -7,8 +7,11 @@ namespace JustTest.Game.Combat
     {
         [SerializeField] private Collider2D hitboxCollider;
         [SerializeField] private LayerMask targetLayers = ~0;
+        [SerializeField, Range(1, 64)] private int maximumOverlapResults = 16;
 
         private AttackInstance activeAttack;
+        private Collider2D[] overlapResults;
+        private ContactFilter2D contactFilter;
         private bool ready;
 
         public event Action<HitResult> HitResolved;
@@ -27,7 +30,26 @@ namespace JustTest.Game.Combat
                 return;
             }
 
+            maximumOverlapResults = Mathf.Clamp(maximumOverlapResults, 1, 64);
+            overlapResults = new Collider2D[maximumOverlapResults];
+            contactFilter = new ContactFilter2D();
+            contactFilter.SetLayerMask(targetLayers);
+            contactFilter.useTriggers = true;
             hitboxCollider.enabled = false;
+        }
+
+        private void FixedUpdate()
+        {
+            if (activeAttack == null || !hitboxCollider.enabled)
+            {
+                return;
+            }
+
+            int overlapCount = hitboxCollider.OverlapCollider(contactFilter, overlapResults);
+            for (int index = 0; index < overlapCount; index++)
+            {
+                TryProcessContact(overlapResults[index], out _);
+            }
         }
 
         private void OnDisable()

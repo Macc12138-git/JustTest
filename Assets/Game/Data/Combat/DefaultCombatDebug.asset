@@ -9,13 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a580f45da159146d487e89c89cf69473, type: 3}
-  m_Name: DefaultPlayerInput
+  m_Script: {fileID: 11500000, guid: 5313f0fd2e7bb4b55a2416b012577ab6, type: 3}
+  m_Name: DefaultCombatDebug
   m_EditorClassIdentifier: 
-  moveLeftKey: 97
-  moveRightKey: 100
-  moveDownKey: 115
-  jumpKey: 32
-  primaryAttackKey: 106
-  rollKey: 107
-  resetKey: 114
+  showOverlay: 1
+  logHitResults: 0
+  allowManualReset: 1
+  overlayFontSize: 18
+  overlayPosition: {x: 16, y: 128}
+  overlaySize: {x: 340, y: 140}

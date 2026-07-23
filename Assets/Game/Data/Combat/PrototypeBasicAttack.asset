@@ -9,13 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a580f45da159146d487e89c89cf69473, type: 3}
-  m_Name: DefaultPlayerInput
+  m_Script: {fileID: 11500000, guid: d3380430e6c384cdf930986dc47e44ff, type: 3}
+  m_Name: PrototypeBasicAttack
   m_EditorClassIdentifier: 
-  moveLeftKey: 97
-  moveRightKey: 100
-  moveDownKey: 115
-  jumpKey: 32
-  primaryAttackKey: 106
-  rollKey: 107
-  resetKey: 114
+  damage: 20
+  windupDuration: 0.08
+  activeDuration: 0.12
+  recoveryDuration: 0.2
+  inputBufferDuration: 0.1
+  allowFriendlyFire: 0

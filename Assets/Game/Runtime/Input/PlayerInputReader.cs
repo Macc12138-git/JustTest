@@ -8,6 +8,7 @@ namespace JustTest.Game.Input
         [SerializeField] private PlayerInputConfig config;
 
         private readonly BufferedButton jumpButton = new BufferedButton();
+        private readonly BufferedButton primaryAttackButton = new BufferedButton();
         private readonly BufferedButton rollButton = new BufferedButton();
 
         internal float Horizontal { get; private set; }
@@ -41,6 +42,11 @@ namespace JustTest.Game.Input
                 jumpButton.Press(Time.time);
             }
 
+            if (UnityEngine.Input.GetKeyDown(config.PrimaryAttackKey))
+            {
+                primaryAttackButton.Press(Time.time);
+            }
+
             if (UnityEngine.Input.GetKeyDown(config.RollKey))
             {
                 rollButton.Press(Time.time);
@@ -66,6 +72,11 @@ namespace JustTest.Game.Input
             return rollButton.IsAvailable(timestamp, bufferDuration);
         }
 
+        internal bool HasBufferedPrimaryAttack(float timestamp, float bufferDuration)
+        {
+            return primaryAttackButton.IsAvailable(timestamp, bufferDuration);
+        }
+
         internal void ConsumeJump()
         {
             jumpButton.Consume();
@@ -76,9 +87,15 @@ namespace JustTest.Game.Input
             rollButton.Consume();
         }
 
+        internal void ConsumePrimaryAttack()
+        {
+            primaryAttackButton.Consume();
+        }
+
         internal void ClearBufferedActions()
         {
             jumpButton.Clear();
+            primaryAttackButton.Clear();
             rollButton.Clear();
         }
     }
