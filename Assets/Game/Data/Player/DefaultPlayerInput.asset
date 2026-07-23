@@ -19,3 +19,6 @@ MonoBehaviour:
   primaryAttackKey: 106
   rollKey: 107
   resetKey: 114
+  weaponSlotOneKey: 49
+  weaponSlotTwoKey: 50
+  weaponSlotThreeKey: 51

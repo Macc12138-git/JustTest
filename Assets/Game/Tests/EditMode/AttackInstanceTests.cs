@@ -119,6 +119,27 @@ namespace JustTest.Game.Tests
             Assert.That(target.LastRequest.Reaction.KnockbackVelocity, Is.EqualTo(new Vector2(-7f, 3f)));
         }
 
+        [Test]
+        public void TryHit_PropagatesDirectStatusApplication()
+        {
+            CombatStatusApplication status = new CombatStatusApplication(
+                CombatStatusType.Airborne,
+                1.5f);
+            AttackInstance attack = factory.Create(
+                100,
+                CombatFaction.Player,
+                1f,
+                1,
+                new HitReactionData(0.3f, new Vector2(3f, 9f)),
+                status);
+            FakeHitTarget target = new FakeHitTarget(200, 100f);
+
+            attack.TryHit(target);
+
+            Assert.That(target.LastRequest.Status.StatusType, Is.EqualTo(CombatStatusType.Airborne));
+            Assert.That(target.LastRequest.Status.Duration, Is.EqualTo(1.5f));
+        }
+
         [TestCase(0, CombatFaction.Player, 10f)]
         [TestCase(100, CombatFaction.None, 10f)]
         [TestCase(100, CombatFaction.Player, 0f)]

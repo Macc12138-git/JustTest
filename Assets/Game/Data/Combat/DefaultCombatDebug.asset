@@ -17,6 +17,16 @@ MonoBehaviour:
   allowManualReset: 1
   normalEnemyAttackKey: 117
   heavyEnemyAttackKey: 105
+  applyUnbalancedKey: 282
+  applyAirborneKey: 283
+  applyStunnedKey: 284
+  bypassPostHitInvulnerabilityForStatusTests: 1
   overlayFontSize: 18
-  overlayPosition: {x: 16, y: 128}
-  overlaySize: {x: 460, y: 210}
+  overlayPosition: {x: 16, y: 164}
+  overlaySize: {x: 760, y: 430}
+  weaponSlotsPosition: {x: 16, y: 92}
+  weaponSlotSize: {x: 210, y: 56}
+  weaponSlotGap: 8
+  activeWeaponColor: {r: 0.25, g: 0.85, b: 0.45, a: 1}
+  qteCandidateColor: {r: 1, g: 0.75, b: 0.15, a: 1}
+  inactiveWeaponColor: {r: 0.45, g: 0.45, b: 0.45, a: 1}

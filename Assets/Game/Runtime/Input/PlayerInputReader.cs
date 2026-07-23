@@ -15,6 +15,7 @@ namespace JustTest.Game.Input
         internal bool DownHeld { get; private set; }
         internal bool JumpHeld { get; private set; }
         internal bool ResetPressedThisFrame { get; private set; }
+        internal int WeaponSlotPressedThisFrame { get; private set; } = -1;
 
         private void Awake()
         {
@@ -36,6 +37,7 @@ namespace JustTest.Game.Input
             DownHeld = UnityEngine.Input.GetKey(config.MoveDownKey);
             JumpHeld = UnityEngine.Input.GetKey(config.JumpKey);
             ResetPressedThisFrame = UnityEngine.Input.GetKeyDown(config.ResetKey);
+            WeaponSlotPressedThisFrame = ReadWeaponSlotPressedThisFrame();
 
             if (UnityEngine.Input.GetKeyDown(config.JumpKey))
             {
@@ -59,6 +61,7 @@ namespace JustTest.Game.Input
             DownHeld = false;
             JumpHeld = false;
             ResetPressedThisFrame = false;
+            WeaponSlotPressedThisFrame = -1;
             ClearBufferedActions();
         }
 
@@ -97,6 +100,21 @@ namespace JustTest.Game.Input
             jumpButton.Clear();
             primaryAttackButton.Clear();
             rollButton.Clear();
+        }
+
+        private int ReadWeaponSlotPressedThisFrame()
+        {
+            if (UnityEngine.Input.GetKeyDown(config.WeaponSlotOneKey))
+            {
+                return 0;
+            }
+
+            if (UnityEngine.Input.GetKeyDown(config.WeaponSlotTwoKey))
+            {
+                return 1;
+            }
+
+            return UnityEngine.Input.GetKeyDown(config.WeaponSlotThreeKey) ? 2 : -1;
         }
     }
 }

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b8826c5f502b436787793b0d74e1785, type: 3}
+  m_Name: PrototypeWeaponLoadout
+  m_EditorClassIdentifier: 
+  defaultWeapon: {fileID: 11400000, guid: 34b32312c06cc4b65bfb272b3c51cba6, type: 2}
+  startingWeapons:
+  - {fileID: 11400000, guid: 34b32312c06cc4b65bfb272b3c51cba6, type: 2}
+  - {fileID: 11400000, guid: c38b15f3a29e24923ae31176a6e8fdb2, type: 2}
+  - {fileID: 11400000, guid: 5f8209aa5a42c40b9b538feb68580ac1, type: 2}

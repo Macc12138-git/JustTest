@@ -16,6 +16,11 @@ namespace JustTest.Game.Input
         [SerializeField] private KeyCode rollKey = KeyCode.K;
         [SerializeField] private KeyCode resetKey = KeyCode.R;
 
+        [Header("Weapons")]
+        [SerializeField] private KeyCode weaponSlotOneKey = KeyCode.Alpha1;
+        [SerializeField] private KeyCode weaponSlotTwoKey = KeyCode.Alpha2;
+        [SerializeField] private KeyCode weaponSlotThreeKey = KeyCode.Alpha3;
+
         internal KeyCode MoveLeftKey => moveLeftKey;
         internal KeyCode MoveRightKey => moveRightKey;
         internal KeyCode MoveDownKey => moveDownKey;
@@ -23,5 +28,8 @@ namespace JustTest.Game.Input
         internal KeyCode PrimaryAttackKey => primaryAttackKey;
         internal KeyCode RollKey => rollKey;
         internal KeyCode ResetKey => resetKey;
+        internal KeyCode WeaponSlotOneKey => weaponSlotOneKey;
+        internal KeyCode WeaponSlotTwoKey => weaponSlotTwoKey;
+        internal KeyCode WeaponSlotThreeKey => weaponSlotThreeKey;
     }
 }

@@ -12,6 +12,8 @@ namespace JustTest.Game.Combat
         [SerializeField, Min(0f)] private float inputBufferDuration = 0.1f;
         [SerializeField, Min(0f)] private float hitStunDuration = 0.2f;
         [SerializeField] private Vector2 knockbackVelocity = new Vector2(4f, 1.5f);
+        [SerializeField] private CombatStatusType appliedStatus;
+        [SerializeField, Min(0f)] private float statusDuration;
         [SerializeField] private bool allowFriendlyFire;
 
         internal float Damage => damage;
@@ -28,6 +30,10 @@ namespace JustTest.Game.Combat
             hitStunDuration,
             knockbackVelocity);
 
+        internal CombatStatusApplication StatusApplication => new CombatStatusApplication(
+            appliedStatus,
+            statusDuration);
+
         internal bool AllowFriendlyFire => allowFriendlyFire;
 
         private void OnValidate()
@@ -41,6 +47,9 @@ namespace JustTest.Game.Combat
             knockbackVelocity = new Vector2(
                 SanitizeFinite(knockbackVelocity.x),
                 SanitizeFinite(knockbackVelocity.y));
+            statusDuration = appliedStatus == CombatStatusType.None
+                ? 0f
+                : Mathf.Max(0.01f, SanitizeFinite(statusDuration));
         }
 
         private static float SanitizeNonNegative(float value)

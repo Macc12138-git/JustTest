@@ -1,6 +1,7 @@
 using System;
 using JustTest.Game.Input;
 using JustTest.Game.Player;
+using JustTest.Game.Weapons;
 using UnityEngine;
 
 namespace JustTest.Game.Combat
@@ -11,7 +12,7 @@ namespace JustTest.Game.Combat
         [SerializeField] private PlayerMovementController movementController;
         [SerializeField] private Hitbox2D hitbox;
         [SerializeField] private Transform attackAnchor;
-        [SerializeField] private AttackDefinition attackDefinition;
+        [SerializeField] private PlayerWeaponLoadout weaponLoadout;
 
         private AttackInstanceFactory attackFactory;
         private AttackTimeline timeline;
@@ -40,7 +41,7 @@ namespace JustTest.Game.Combat
                 movementController != null &&
                 hitbox != null &&
                 attackAnchor != null &&
-                attackDefinition != null;
+                weaponLoadout != null;
             if (!ready)
             {
                 Debug.LogError($"{nameof(PlayerAttackRunner)} is missing an Inspector reference.", this);
@@ -49,11 +50,6 @@ namespace JustTest.Game.Combat
             }
 
             attackFactory = new AttackInstanceFactory();
-            timeline = new AttackTimeline(
-                attackDefinition.WindupDuration,
-                attackDefinition.ActiveDuration,
-                attackDefinition.RecoveryDuration);
-            timeline.PhaseChanged += OnPhaseChanged;
             attackAnchorBaseLocalPosition = attackAnchor.localPosition;
             UpdateAttackAnchorFacing();
         }
@@ -65,12 +61,12 @@ namespace JustTest.Game.Combat
                 return;
             }
 
-            if (movementController.IsRolling && timeline.IsRunning)
+            if (movementController.IsRolling && IsAttacking)
             {
                 CancelAttack();
             }
 
-            timeline.Tick(Time.deltaTime);
+            timeline?.Tick(Time.deltaTime);
             TryStartBufferedAttack(Time.time);
         }
 
@@ -97,7 +93,9 @@ namespace JustTest.Game.Combat
 
         private void TryStartBufferedAttack(float timestamp)
         {
-            if (timeline.IsRunning ||
+            AttackDefinition attackDefinition = weaponLoadout.ActiveWeapon?.BasicAttack;
+            if (attackDefinition == null ||
+                IsAttacking ||
                 !movementController.CanStartAction ||
                 !inputReader.HasBufferedPrimaryAttack(
                     timestamp,
@@ -107,6 +105,7 @@ namespace JustTest.Game.Combat
             }
 
             inputReader.ConsumePrimaryAttack();
+            PrepareTimeline(attackDefinition);
             UpdateAttackAnchorFacing();
             activeAttack = attackFactory.Create(
                 GetInstanceID(),
@@ -114,9 +113,24 @@ namespace JustTest.Game.Combat
                 attackDefinition.Damage,
                 movementController.FacingDirection,
                 attackDefinition.HitReaction,
+                attackDefinition.StatusApplication,
                 attackDefinition.AllowFriendlyFire);
             activeAttack.HitResolved += OnAttackHitResolved;
             timeline.Start();
+        }
+
+        private void PrepareTimeline(AttackDefinition attackDefinition)
+        {
+            if (timeline != null)
+            {
+                timeline.PhaseChanged -= OnPhaseChanged;
+            }
+
+            timeline = new AttackTimeline(
+                attackDefinition.WindupDuration,
+                attackDefinition.ActiveDuration,
+                attackDefinition.RecoveryDuration);
+            timeline.PhaseChanged += OnPhaseChanged;
         }
 
         private void OnPhaseChanged(AttackPhase previousPhase, AttackPhase nextPhase)

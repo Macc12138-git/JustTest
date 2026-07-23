@@ -19,6 +19,8 @@ namespace JustTest.Game.Tests
             Assert.That(definition.InputBufferDuration, Is.EqualTo(0.1f));
             Assert.That(definition.HitReaction.HitStunDuration, Is.EqualTo(0.2f));
             Assert.That(definition.HitReaction.KnockbackVelocity, Is.EqualTo(new Vector2(4f, 1.5f)));
+            Assert.That(definition.StatusApplication.StatusType, Is.EqualTo(CombatStatusType.None));
+            Assert.That(definition.StatusApplication.Duration, Is.Zero);
             Assert.That(definition.AllowFriendlyFire, Is.False);
 
             Object.DestroyImmediate(definition);
@@ -30,6 +32,9 @@ namespace JustTest.Game.Tests
             PlayerInputConfig config = ScriptableObject.CreateInstance<PlayerInputConfig>();
 
             Assert.That(config.PrimaryAttackKey, Is.EqualTo(KeyCode.J));
+            Assert.That(config.WeaponSlotOneKey, Is.EqualTo(KeyCode.Alpha1));
+            Assert.That(config.WeaponSlotTwoKey, Is.EqualTo(KeyCode.Alpha2));
+            Assert.That(config.WeaponSlotThreeKey, Is.EqualTo(KeyCode.Alpha3));
 
             Object.DestroyImmediate(config);
         }
@@ -40,10 +45,14 @@ namespace JustTest.Game.Tests
             CombatDebugConfig config = ScriptableObject.CreateInstance<CombatDebugConfig>();
 
             Assert.That(config.OverlayFontSize, Is.EqualTo(18));
-            Assert.That(config.OverlaySize.x, Is.GreaterThanOrEqualTo(420f));
-            Assert.That(config.OverlaySize.y, Is.GreaterThanOrEqualTo(210f));
+            Assert.That(config.OverlaySize.x, Is.GreaterThanOrEqualTo(680f));
+            Assert.That(config.OverlaySize.y, Is.GreaterThanOrEqualTo(360f));
             Assert.That(config.NormalEnemyAttackKey, Is.EqualTo(KeyCode.U));
             Assert.That(config.HeavyEnemyAttackKey, Is.EqualTo(KeyCode.I));
+            Assert.That(config.ApplyUnbalancedKey, Is.EqualTo(KeyCode.F1));
+            Assert.That(config.ApplyAirborneKey, Is.EqualTo(KeyCode.F2));
+            Assert.That(config.ApplyStunnedKey, Is.EqualTo(KeyCode.F3));
+            Assert.That(config.BypassPostHitInvulnerabilityForStatusTests, Is.True);
 
             Object.DestroyImmediate(config);
         }

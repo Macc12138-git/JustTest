@@ -15,6 +15,7 @@ namespace JustTest.Game.Combat
                 damage,
                 1,
                 default,
+                default,
                 allowFriendlyFire)
         {
         }
@@ -27,6 +28,27 @@ namespace JustTest.Game.Combat
             int attackDirection,
             HitReactionData reaction,
             bool allowFriendlyFire = false)
+            : this(
+                attackInstanceId,
+                sourceId,
+                sourceFaction,
+                damage,
+                attackDirection,
+                reaction,
+                default,
+                allowFriendlyFire)
+        {
+        }
+
+        public HitRequest(
+            int attackInstanceId,
+            int sourceId,
+            CombatFaction sourceFaction,
+            float damage,
+            int attackDirection,
+            HitReactionData reaction,
+            CombatStatusApplication status,
+            bool allowFriendlyFire = false)
         {
             AttackInstanceId = attackInstanceId;
             SourceId = sourceId;
@@ -34,6 +56,7 @@ namespace JustTest.Game.Combat
             Damage = damage;
             AttackDirection = attackDirection;
             Reaction = reaction;
+            Status = status;
             AllowFriendlyFire = allowFriendlyFire;
         }
 
@@ -49,6 +72,8 @@ namespace JustTest.Game.Combat
 
         public HitReactionData Reaction { get; }
 
+        public CombatStatusApplication Status { get; }
+
         public bool AllowFriendlyFire { get; }
 
         internal bool IsValid =>
@@ -59,6 +84,7 @@ namespace JustTest.Game.Combat
             Damage > 0f &&
             !float.IsNaN(Damage) &&
             !float.IsInfinity(Damage) &&
-            Reaction.IsValid;
+            Reaction.IsValid &&
+            Status.IsValid;
     }
 }
