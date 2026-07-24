@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56894832a41a9443ebd0508c29ffc65d, type: 3}
+  m_Name: DefaultMeleeEnemy
+  m_EditorClassIdentifier: 
+  movementSpeed: 4.5
+  groundAcceleration: 35
+  groundDeceleration: 45
+  airAcceleration: 20
+  jumpHeight: 3.4
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  oneWayPlatformLayers:
+    serializedVersion: 2
+    m_Bits: 512
+  groundProbeDistance: 0.1
+  maximumGroundAngle: 50
+  forwardObstacleProbeDistance: 0.2
+  minimumJumpObstacleHeight: 0.15
+  obstacleExitClearance: 0.12
+  nodeSnapDistance: 2.5
+  waypointTolerance: 0.18
+  replanInterval: 0.3
+  stuckDuration: 0.8
+  stuckMovementThreshold: 0.08
+  dropThroughMinimumDuration: 0.18
+  dropThroughMaximumDuration: 0.6
+  dropThroughSpeed: 3.5
+  dropThroughClearance: 0.08
+  detectionRange: 18
+  attackRange: 1.45
+  attackVerticalTolerance: 1.15
+  attackCooldown: 0.55
+  telegraphWindupColor: {r: 1, g: 0.75, b: 0.15, a: 0.8}
+  telegraphActiveColor: {r: 1, g: 0.15, b: 0.1, a: 0.9}
