@@ -13,6 +13,7 @@ namespace JustTest.Game.Weapons
         [SerializeField] private PlayerMovementController movementController;
         [SerializeField] private PlayerAttackRunner attackRunner;
         [SerializeField] private PlayerWeaponLoadout weaponLoadout;
+        [SerializeField] private PlayerWeaponQteExecutor qteExecutor;
         [SerializeField] private CombatStatusEventChannel statusEventChannel;
 
         private readonly WeaponQteOpportunityState opportunity = new WeaponQteOpportunityState();
@@ -36,6 +37,7 @@ namespace JustTest.Game.Weapons
                 movementController != null &&
                 attackRunner != null &&
                 weaponLoadout != null &&
+                qteExecutor != null &&
                 statusEventChannel != null;
             if (ready)
             {
@@ -55,6 +57,7 @@ namespace JustTest.Game.Weapons
 
             statusEventChannel.StatusApplied += OnStatusApplied;
             statusEventChannel.StatusEnded += OnStatusEnded;
+            qteExecutor.Completed += OnQteCompleted;
         }
 
         private void Update()
@@ -97,6 +100,11 @@ namespace JustTest.Game.Weapons
                 statusEventChannel.StatusEnded -= OnStatusEnded;
             }
 
+            if (qteExecutor != null)
+            {
+                qteExecutor.Completed -= OnQteCompleted;
+            }
+
             ClearOpportunity();
         }
 
@@ -132,7 +140,7 @@ namespace JustTest.Game.Weapons
 
         private void TrySelectQteCandidate(int slotIndex)
         {
-            if (!opportunity.IsCandidate(slotIndex))
+            if (!movementController.CanStartAction || !opportunity.IsCandidate(slotIndex))
             {
                 return;
             }
@@ -140,22 +148,38 @@ namespace JustTest.Game.Weapons
             CombatStatusController selectedTarget = currentTarget;
             CombatStatusType selectedStatus = opportunity.StatusType;
             int selectedApplicationId = opportunity.ApplicationId;
-
-            attackRunner.CancelAttack();
-            if (!weaponLoadout.TrySelectSlot(slotIndex) || !opportunity.TrySelect(slotIndex))
-            {
-                return;
-            }
-
-            WeaponDefinition selectedWeapon = weaponLoadout.ActiveWeapon;
-            currentTarget = null;
-            OpportunityChanged?.Invoke();
-            QteSelected?.Invoke(new WeaponQteSelection(
+            WeaponDefinition selectedWeapon = weaponLoadout.GetWeapon(slotIndex);
+            WeaponQteSelection selection = new WeaponQteSelection(
                 selectedTarget,
                 selectedStatus,
                 selectedApplicationId,
                 slotIndex,
-                selectedWeapon));
+                selectedWeapon);
+
+            if (!qteExecutor.TryStart(selection))
+            {
+                return;
+            }
+
+            if (!opportunity.TrySelect(slotIndex))
+            {
+                qteExecutor.CancelAction(WeaponQteCancelReason.InvalidRequest);
+                return;
+            }
+
+            currentTarget = null;
+            OpportunityChanged?.Invoke();
+            QteSelected?.Invoke(selection);
+        }
+
+        private void OnQteCompleted(WeaponQteSelection selection)
+        {
+            if (!weaponLoadout.TrySelectSlot(selection.SlotIndex))
+            {
+                Debug.LogError(
+                    $"{nameof(PlayerWeaponQteController)} could not equip the completed QTE weapon.",
+                    this);
+            }
         }
 
         private void ClearOpportunity()

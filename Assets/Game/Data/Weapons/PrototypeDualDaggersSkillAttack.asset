@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3380430e6c384cdf930986dc47e44ff, type: 3}
+  m_Name: PrototypeDualDaggersSkillAttack
+  m_EditorClassIdentifier: 
+  damage: 14
+  windupDuration: 0.05
+  activeDuration: 0.16
+  recoveryDuration: 0.16
+  inputBufferDuration: 0.1
+  hitStunDuration: 0.25
+  knockbackVelocity: {x: 2, y: 0.5}
+  appliedStatus: 3
+  statusDuration: 1.6
+  allowFriendlyFire: 0
+  ignorePostHitInvulnerability: 0

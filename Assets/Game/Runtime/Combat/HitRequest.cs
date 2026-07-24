@@ -16,7 +16,8 @@ namespace JustTest.Game.Combat
                 1,
                 default,
                 default,
-                allowFriendlyFire)
+                allowFriendlyFire,
+                false)
         {
         }
 
@@ -36,7 +37,8 @@ namespace JustTest.Game.Combat
                 attackDirection,
                 reaction,
                 default,
-                allowFriendlyFire)
+                allowFriendlyFire,
+                false)
         {
         }
 
@@ -48,7 +50,8 @@ namespace JustTest.Game.Combat
             int attackDirection,
             HitReactionData reaction,
             CombatStatusApplication status,
-            bool allowFriendlyFire = false)
+            bool allowFriendlyFire = false,
+            bool ignorePostHitInvulnerability = false)
         {
             AttackInstanceId = attackInstanceId;
             SourceId = sourceId;
@@ -58,6 +61,7 @@ namespace JustTest.Game.Combat
             Reaction = reaction;
             Status = status;
             AllowFriendlyFire = allowFriendlyFire;
+            IgnorePostHitInvulnerability = ignorePostHitInvulnerability;
         }
 
         public int AttackInstanceId { get; }
@@ -75,6 +79,8 @@ namespace JustTest.Game.Combat
         public CombatStatusApplication Status { get; }
 
         public bool AllowFriendlyFire { get; }
+
+        public bool IgnorePostHitInvulnerability { get; }
 
         internal bool IsValid =>
             AttackInstanceId != 0 &&

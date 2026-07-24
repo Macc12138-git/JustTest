@@ -23,7 +23,7 @@ MonoBehaviour:
   bypassPostHitInvulnerabilityForStatusTests: 1
   overlayFontSize: 18
   overlayPosition: {x: 16, y: 164}
-  overlaySize: {x: 760, y: 430}
+  overlaySize: {x: 760, y: 500}
   weaponSlotsPosition: {x: 16, y: 92}
   weaponSlotSize: {x: 210, y: 56}
   weaponSlotGap: 8

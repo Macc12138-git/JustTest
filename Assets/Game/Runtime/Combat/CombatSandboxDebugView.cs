@@ -1,3 +1,4 @@
+using JustTest.Game.Player;
 using JustTest.Game.Weapons;
 using UnityEngine;
 
@@ -8,6 +9,9 @@ namespace JustTest.Game.Combat
         [SerializeField] private PlayerAttackRunner attackRunner;
         [SerializeField] private PlayerWeaponLoadout weaponLoadout;
         [SerializeField] private PlayerWeaponQteController weaponQteController;
+        [SerializeField] private PlayerWeaponQteExecutor weaponQteExecutor;
+        [SerializeField] private PlayerWeaponSkillRunner weaponSkillRunner;
+        [SerializeField] private PlayerEnergyController playerEnergy;
         [SerializeField] private HealthComponent targetHealth;
         [SerializeField] private CombatReactionReceiver targetReaction;
         [SerializeField] private CombatStatusController targetStatuses;
@@ -30,6 +34,9 @@ namespace JustTest.Game.Combat
                 attackRunner != null &&
                 weaponLoadout != null &&
                 weaponQteController != null &&
+                weaponQteExecutor != null &&
+                weaponSkillRunner != null &&
+                playerEnergy != null &&
                 targetHealth != null &&
                 targetReaction != null &&
                 targetStatuses != null &&
@@ -51,6 +58,8 @@ namespace JustTest.Game.Combat
             if (ready)
             {
                 attackRunner.HitResolved += OnHitResolved;
+                weaponSkillRunner.HitResolved += OnHitResolved;
+                weaponQteExecutor.HitResolved += OnHitResolved;
                 targetStatuses.StatusApplied += OnStatusApplied;
             }
         }
@@ -60,6 +69,16 @@ namespace JustTest.Game.Combat
             if (attackRunner != null)
             {
                 attackRunner.HitResolved -= OnHitResolved;
+            }
+
+            if (weaponSkillRunner != null)
+            {
+                weaponSkillRunner.HitResolved -= OnHitResolved;
+            }
+
+            if (weaponQteExecutor != null)
+            {
+                weaponQteExecutor.HitResolved -= OnHitResolved;
             }
 
             if (targetStatuses != null)
@@ -93,9 +112,15 @@ namespace JustTest.Game.Combat
 
             weaponSlotStyle.fontSize = config.OverlayFontSize;
             DrawWeaponSlots();
+            WeaponSkillDefinition currentSkill = weaponLoadout.ActiveWeapon?.Skill;
             string text =
                 $"Current Weapon: {GetWeaponName(weaponLoadout.ActiveWeapon)}\n" +
+                $"Energy: {playerEnergy.CurrentEnergy:0.0}/{playerEnergy.MaximumEnergy:0.0}\n" +
+                $"Skill: {GetSkillName(currentSkill)}, Cost: {(currentSkill != null ? currentSkill.EnergyCost : 0f):0.0}\n" +
+                $"Skill Action: {weaponSkillRunner.Phase}, Cancel: {weaponSkillRunner.LastCancelReason}\n" +
                 $"QTE: {(weaponQteController.HasOpportunity ? $"{weaponQteController.OpportunityStatus} #{weaponQteController.OpportunityApplicationId}" : "None")}\n" +
+                $"QTE Action: {weaponQteExecutor.Phase}, Strike: {weaponQteExecutor.CurrentStrikeIndex + 1}\n" +
+                $"QTE Pending: {GetWeaponName(weaponQteExecutor.PendingWeapon)}, Cancel: {weaponQteExecutor.LastCancelReason}\n" +
                 $"Attack: {attackRunner.Phase}\n" +
                 $"Attack ID: {attackRunner.CurrentAttackInstanceId}\n" +
                 $"Last Hit: {outcomeText}\n" +
@@ -130,15 +155,26 @@ namespace JustTest.Game.Combat
                 WeaponDefinition weapon = weaponLoadout.GetWeapon(slotIndex);
                 bool isCandidate = weaponQteController.IsCandidate(slotIndex);
                 bool isActive = weaponLoadout.ActiveSlotIndex == slotIndex;
+                bool isExecuting =
+                    weaponQteExecutor.IsExecuting &&
+                    weaponQteExecutor.PendingSlotIndex == slotIndex;
                 Color fillColor = isCandidate
                     ? config.QteCandidateColor
+                    : isExecuting
+                        ? config.QteCandidateColor
                     : isActive
                         ? config.ActiveWeaponColor
                         : config.InactiveWeaponColor;
-                fillColor.a = isCandidate ? 0.65f : isActive ? 0.45f : 0.22f;
+                fillColor.a = isCandidate || isExecuting ? 0.65f : isActive ? 0.45f : 0.22f;
                 GUI.contentColor = weapon != null ? weapon.DebugColor : Color.white;
 
-                string stateText = isCandidate ? "QTE" : isActive ? "ACTIVE" : string.Empty;
+                string stateText = isExecuting
+                    ? "QTE EXECUTING"
+                    : isCandidate
+                        ? "QTE"
+                        : isActive
+                            ? "ACTIVE"
+                            : string.Empty;
                 string label = $"{slotIndex + 1}  {GetWeaponName(weapon)}";
                 if (!string.IsNullOrEmpty(stateText))
                 {
@@ -201,6 +237,11 @@ namespace JustTest.Game.Combat
         private static string GetWeaponName(WeaponDefinition weapon)
         {
             return weapon != null ? weapon.DisplayName : "Empty";
+        }
+
+        private static string GetSkillName(WeaponSkillDefinition skill)
+        {
+            return skill != null ? skill.DisplayName : "None";
         }
     }
 }

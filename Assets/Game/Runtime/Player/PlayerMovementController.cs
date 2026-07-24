@@ -125,6 +125,14 @@ namespace JustTest.Game.Player
             rollController?.Cancel();
         }
 
+        internal void SetFacingDirection(int direction)
+        {
+            if (direction == -1 || direction == 1)
+            {
+                FacingDirection = direction;
+            }
+        }
+
         public void ApplyExternalVelocity(Vector2 velocity)
         {
             if (!ready)

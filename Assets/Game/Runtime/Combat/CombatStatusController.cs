@@ -18,6 +18,10 @@ namespace JustTest.Game.Combat
 
         public int ActiveStatusCount => state.ActiveCount;
 
+        internal HealthComponent OwnerHealth => health;
+
+        internal DamageReceiver OwnerDamageReceiver => damageReceiver;
+
         private void Awake()
         {
             ready = damageReceiver != null && health != null && eventChannel != null;
@@ -79,6 +83,13 @@ namespace JustTest.Game.Combat
         internal int GetApplicationId(CombatStatusType statusType)
         {
             return state.GetApplicationId(statusType);
+        }
+
+        internal bool IsApplicationActive(CombatStatusType statusType, int applicationId)
+        {
+            return applicationId != 0 &&
+                   state.IsActive(statusType) &&
+                   state.GetApplicationId(statusType) == applicationId;
         }
 
         internal bool RemoveStatus(CombatStatusType statusType, int expectedApplicationId = 0)

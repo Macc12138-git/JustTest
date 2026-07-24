@@ -13,6 +13,7 @@ namespace JustTest.Game.Combat
         private readonly HitReactionData reaction;
         private readonly CombatStatusApplication status;
         private readonly bool allowFriendlyFire;
+        private readonly bool ignorePostHitInvulnerability;
 
         internal AttackInstance(
             int instanceId,
@@ -22,7 +23,8 @@ namespace JustTest.Game.Combat
             int attackDirection,
             HitReactionData reaction,
             CombatStatusApplication status,
-            bool allowFriendlyFire)
+            bool allowFriendlyFire,
+            bool ignorePostHitInvulnerability)
         {
             InstanceId = instanceId;
             this.sourceId = sourceId;
@@ -32,6 +34,7 @@ namespace JustTest.Game.Combat
             this.reaction = reaction.ToWorld(attackDirection);
             this.status = status;
             this.allowFriendlyFire = allowFriendlyFire;
+            this.ignorePostHitInvulnerability = ignorePostHitInvulnerability;
         }
 
         internal event Action<HitResult> HitResolved;
@@ -75,7 +78,8 @@ namespace JustTest.Game.Combat
                 attackDirection,
                 reaction,
                 status,
-                allowFriendlyFire);
+                allowFriendlyFire,
+                ignorePostHitInvulnerability);
             return Publish(target.ReceiveHit(request));
         }
 

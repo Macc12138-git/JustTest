@@ -10,6 +10,7 @@ namespace JustTest.Game.Input
         private readonly BufferedButton jumpButton = new BufferedButton();
         private readonly BufferedButton primaryAttackButton = new BufferedButton();
         private readonly BufferedButton rollButton = new BufferedButton();
+        private readonly BufferedButton weaponSkillButton = new BufferedButton();
 
         internal float Horizontal { get; private set; }
         internal bool DownHeld { get; private set; }
@@ -53,6 +54,11 @@ namespace JustTest.Game.Input
             {
                 rollButton.Press(Time.time);
             }
+
+            if (UnityEngine.Input.GetKeyDown(config.WeaponSkillKey))
+            {
+                weaponSkillButton.Press(Time.time);
+            }
         }
 
         private void OnDisable()
@@ -80,6 +86,11 @@ namespace JustTest.Game.Input
             return primaryAttackButton.IsAvailable(timestamp, bufferDuration);
         }
 
+        internal bool HasBufferedWeaponSkill(float timestamp, float bufferDuration)
+        {
+            return weaponSkillButton.IsAvailable(timestamp, bufferDuration);
+        }
+
         internal void ConsumeJump()
         {
             jumpButton.Consume();
@@ -95,11 +106,17 @@ namespace JustTest.Game.Input
             primaryAttackButton.Consume();
         }
 
+        internal void ConsumeWeaponSkill()
+        {
+            weaponSkillButton.Consume();
+        }
+
         internal void ClearBufferedActions()
         {
             jumpButton.Clear();
             primaryAttackButton.Clear();
             rollButton.Clear();
+            weaponSkillButton.Clear();
         }
 
         private int ReadWeaponSlotPressedThisFrame()

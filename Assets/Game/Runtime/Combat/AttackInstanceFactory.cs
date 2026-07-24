@@ -19,7 +19,8 @@ namespace JustTest.Game.Combat
                 1,
                 default,
                 default,
-                allowFriendlyFire);
+                allowFriendlyFire,
+                false);
         }
 
         internal AttackInstance Create(
@@ -37,7 +38,8 @@ namespace JustTest.Game.Combat
                 attackDirection,
                 reaction,
                 default,
-                allowFriendlyFire);
+                allowFriendlyFire,
+                false);
         }
 
         internal AttackInstance Create(
@@ -47,7 +49,8 @@ namespace JustTest.Game.Combat
             int attackDirection,
             HitReactionData reaction,
             CombatStatusApplication status,
-            bool allowFriendlyFire = false)
+            bool allowFriendlyFire = false,
+            bool ignorePostHitInvulnerability = false)
         {
             if (sourceId == 0)
             {
@@ -89,7 +92,8 @@ namespace JustTest.Game.Combat
                 attackDirection,
                 reaction,
                 status,
-                allowFriendlyFire);
+                allowFriendlyFire,
+                ignorePostHitInvulnerability);
         }
     }
 }

@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d9154885921c409f94ab5155a513d27, type: 3}
+  m_Name: PrototypeDualDaggersQte
+  m_EditorClassIdentifier: 
+  motionMode: 1
+  maximumTriggerDistance: 6
+  approachSpeed: 26
+  approachTimeout: 0.35
+  horizontalTargetDistance: 0.65
+  verticalTargetOffset: -0.15
+  stoppingDistance: 0.06
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  grantInvulnerability: 1
+  strikes:
+  - attack: {fileID: 11400000, guid: dea64676630634ff3b495f806e8a449a, type: 2}
+    hitboxOffset: {x: 0.65, y: 0.1}
+    hitboxSize: {x: 1.2, y: 0.9}
+    movementVelocity: {x: 4, y: 1}
+  - attack: {fileID: 11400000, guid: dea64676630634ff3b495f806e8a449a, type: 2}
+    hitboxOffset: {x: 0.65, y: 0}
+    hitboxSize: {x: 1.2, y: 0.9}
+    movementVelocity: {x: 4, y: 0}
+  - attack: {fileID: 11400000, guid: 0ae607791d9974c6ba2d3597c3bd4691, type: 2}
+    hitboxOffset: {x: 0.75, y: -0.1}
+    hitboxSize: {x: 1.4, y: 1.1}
+    movementVelocity: {x: 5, y: -2}
+  completionVelocity: {x: 2, y: -1}

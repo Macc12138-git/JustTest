@@ -42,5 +42,18 @@ namespace JustTest.Game.Tests
             Assert.That(changed, Is.False);
             Assert.That(state.IsLocked, Is.False);
         }
+
+        [Test]
+        public void RemovingWeaponSkillLock_DoesNotReleaseQteLock()
+        {
+            PlayerControlLockState state = new PlayerControlLockState();
+            state.Set(PlayerControlLockSource.WeaponSkill, true);
+            state.Set(PlayerControlLockSource.Qte, true);
+
+            state.Set(PlayerControlLockSource.WeaponSkill, false);
+
+            Assert.That(state.IsLocked, Is.True);
+            Assert.That(state.ActiveSources, Is.EqualTo(PlayerControlLockSource.Qte));
+        }
     }
 }

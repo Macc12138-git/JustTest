@@ -277,6 +277,9 @@ MonoBehaviour:
   attackRunner: {fileID: 1684092192}
   weaponLoadout: {fileID: 1610036541}
   weaponQteController: {fileID: 1610036540}
+  weaponQteExecutor: {fileID: 1684092193}
+  weaponSkillRunner: {fileID: 1684092195}
+  playerEnergy: {fileID: 1684092194}
   targetHealth: {fileID: 1308302729}
   targetReaction: {fileID: 1308302733}
   targetStatuses: {fileID: 1308302732}
@@ -353,6 +356,101 @@ MonoBehaviour:
   airborneAttack: {fileID: 11400000, guid: b34336f7d5175419da650243ac66731e, type: 2}
   stunnedAttack: {fileID: 11400000, guid: e41514c3eede84075946125f0f5b40c3, type: 2}
   config: {fileID: 11400000, guid: 0ebdf2e9d4aeb4d3ab967de141298896, type: 2}
+--- !u!1 &248244844
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 248244845}
+  - component: {fileID: 248244847}
+  - component: {fileID: 248244846}
+  m_Layer: 10
+  m_Name: QteAttackAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &248244845
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248244844}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1684092189}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &248244846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248244844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fac2cb43002864c64a29e14b75ff9dfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitboxCollider: {fileID: 248244847}
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  maximumOverlapResults: 16
+--- !u!61 &248244847
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248244844}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &318132476
 GameObject:
   m_ObjectHideFlags: 0
@@ -891,7 +989,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4451307513232439151, guid: 62cc6bb7456c744e2b35449327b48e80,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 248244845}
+    - targetCorrespondingSourceObject: {fileID: 4451307513232439151, guid: 62cc6bb7456c744e2b35449327b48e80,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1209865112}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3347189370107519716, guid: 62cc6bb7456c744e2b35449327b48e80,
         type: 3}
@@ -901,6 +1007,18 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1610036540}
+    - targetCorrespondingSourceObject: {fileID: 3347189370107519716, guid: 62cc6bb7456c744e2b35449327b48e80,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1684092193}
+    - targetCorrespondingSourceObject: {fileID: 3347189370107519716, guid: 62cc6bb7456c744e2b35449327b48e80,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1684092195}
+    - targetCorrespondingSourceObject: {fileID: 3347189370107519716, guid: 62cc6bb7456c744e2b35449327b48e80,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1684092194}
   m_SourcePrefab: {fileID: 100100000, guid: 62cc6bb7456c744e2b35449327b48e80, type: 3}
 --- !u!1 &1022322290
 GameObject:
@@ -1164,6 +1282,101 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1209865111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1209865112}
+  - component: {fileID: 1209865114}
+  - component: {fileID: 1209865113}
+  m_Layer: 10
+  m_Name: SkillAttackAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1209865112
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209865111}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1684092189}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1209865113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209865111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fac2cb43002864c64a29e14b75ff9dfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitboxCollider: {fileID: 1209865114}
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  maximumOverlapResults: 16
+--- !u!61 &1209865114
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209865111}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &1243748539
 GameObject:
   m_ObjectHideFlags: 0
@@ -1595,6 +1808,7 @@ MonoBehaviour:
   movementController: {fileID: 1684092183}
   attackRunner: {fileID: 1684092192}
   weaponLoadout: {fileID: 1610036541}
+  qteExecutor: {fileID: 1684092193}
   statusEventChannel: {fileID: 11400000, guid: 13b4a822131ec474c9a30f78e4d9bf8d, type: 2}
 --- !u!114 &1610036541
 MonoBehaviour:
@@ -1657,6 +1871,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 106d48578011d444189335fbfd138272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &1684092188 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 6533030867503684230, guid: 62cc6bb7456c744e2b35449327b48e80,
+    type: 3}
+  m_PrefabInstance: {fileID: 753526858}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1684092189 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4451307513232439151, guid: 62cc6bb7456c744e2b35449327b48e80,
@@ -1699,6 +1919,69 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9e240bbca6234d47b655b4e0dc8ad12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1684092193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431866834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25e40628936524a758ba1c0c1ae571a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementController: {fileID: 1684092183}
+  attackRunner: {fileID: 1684092192}
+  playerDamageReceiver: {fileID: 1684092177}
+  playerHealth: {fileID: 1684092191}
+  playerReaction: {fileID: 1684092176}
+  playerInvulnerability: {fileID: 1684092190}
+  body: {fileID: 1684092188}
+  qteAttackAnchor: {fileID: 248244845}
+  qteHitbox: {fileID: 248244846}
+  qteHitboxCollider: {fileID: 248244847}
+--- !u!114 &1684092194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431866834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b04575531d0514cb6859800064bfa979, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config: {fileID: 11400000, guid: c842a58e2df1e4f5e8dd174c97116fdf, type: 2}
+  playerHealth: {fileID: 1684092191}
+  playerDamageReceiver: {fileID: 1684092177}
+  attackRunner: {fileID: 1684092192}
+  skillRunner: {fileID: 1684092195}
+  qteExecutor: {fileID: 1684092193}
+--- !u!114 &1684092195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431866834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb45ed0637eee41a8a865378fd476943, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputReader: {fileID: 1684092186}
+  movementController: {fileID: 1684092183}
+  attackRunner: {fileID: 1684092192}
+  weaponLoadout: {fileID: 1610036541}
+  energyController: {fileID: 1684092194}
+  playerDamageReceiver: {fileID: 1684092177}
+  playerHealth: {fileID: 1684092191}
+  playerReaction: {fileID: 1684092176}
+  skillAttackAnchor: {fileID: 1209865112}
+  skillHitbox: {fileID: 1209865113}
+  skillHitboxCollider: {fileID: 1209865114}
 --- !u!1 &1720978914
 GameObject:
   m_ObjectHideFlags: 0

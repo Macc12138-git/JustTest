@@ -64,12 +64,15 @@ namespace JustTest.Game.Combat
                 return invalidResult;
             }
 
+            bool targetInvulnerable = request.IgnorePostHitInvulnerability
+                ? invulnerability.IsInvulnerableExcept(InvulnerabilitySource.PostHit)
+                : invulnerability.IsInvulnerable;
             HitResult result = damageResolver.Resolve(
                 request,
                 GetInstanceID(),
                 definition.Faction,
                 health.State,
-                invulnerability.IsInvulnerable);
+                targetInvulnerable);
 
             if (result.WasApplied)
             {

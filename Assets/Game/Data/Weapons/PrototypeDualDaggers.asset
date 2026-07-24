@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Dual Daggers
   basicAttack: {fileID: 11400000, guid: acc35ce79f2b74f0fb8be590348ed85c, type: 2}
+  skill: {fileID: 11400000, guid: ee30bc441454c41909357ff4ba498ab1, type: 2}
   qteTriggerStatus: 2
+  qteAction: {fileID: 11400000, guid: 08cfa8985bbc2474f8a6454bd06f34eb, type: 2}
   debugColor: {r: 0.95, g: 0.35, b: 0.55, a: 1}

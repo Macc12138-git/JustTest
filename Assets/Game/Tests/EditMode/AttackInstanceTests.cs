@@ -140,6 +140,25 @@ namespace JustTest.Game.Tests
             Assert.That(target.LastRequest.Status.Duration, Is.EqualTo(1.5f));
         }
 
+        [Test]
+        public void TryHit_PropagatesPostHitInvulnerabilityOverride()
+        {
+            AttackInstance attack = factory.Create(
+                100,
+                CombatFaction.Player,
+                1f,
+                1,
+                default,
+                default,
+                false,
+                true);
+            FakeHitTarget target = new FakeHitTarget(200, 100f);
+
+            attack.TryHit(target);
+
+            Assert.That(target.LastRequest.IgnorePostHitInvulnerability, Is.True);
+        }
+
         [TestCase(0, CombatFaction.Player, 10f)]
         [TestCase(100, CombatFaction.None, 10f)]
         [TestCase(100, CombatFaction.Player, 0f)]

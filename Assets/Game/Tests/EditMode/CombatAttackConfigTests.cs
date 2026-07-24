@@ -1,5 +1,6 @@
 using JustTest.Game.Combat;
 using JustTest.Game.Input;
+using JustTest.Game.Player;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -22,6 +23,7 @@ namespace JustTest.Game.Tests
             Assert.That(definition.StatusApplication.StatusType, Is.EqualTo(CombatStatusType.None));
             Assert.That(definition.StatusApplication.Duration, Is.Zero);
             Assert.That(definition.AllowFriendlyFire, Is.False);
+            Assert.That(definition.IgnorePostHitInvulnerability, Is.False);
 
             Object.DestroyImmediate(definition);
         }
@@ -32,9 +34,24 @@ namespace JustTest.Game.Tests
             PlayerInputConfig config = ScriptableObject.CreateInstance<PlayerInputConfig>();
 
             Assert.That(config.PrimaryAttackKey, Is.EqualTo(KeyCode.J));
+            Assert.That(config.WeaponSkillKey, Is.EqualTo(KeyCode.L));
             Assert.That(config.WeaponSlotOneKey, Is.EqualTo(KeyCode.Alpha1));
             Assert.That(config.WeaponSlotTwoKey, Is.EqualTo(KeyCode.Alpha2));
             Assert.That(config.WeaponSlotThreeKey, Is.EqualTo(KeyCode.Alpha3));
+
+            Object.DestroyImmediate(config);
+        }
+
+        [Test]
+        public void PlayerEnergyConfig_DefaultsSupportPrototypeLoop()
+        {
+            PlayerEnergyConfig config = ScriptableObject.CreateInstance<PlayerEnergyConfig>();
+
+            Assert.That(config.MaximumEnergy, Is.EqualTo(100f));
+            Assert.That(config.StartingEnergy, Is.EqualTo(100f));
+            Assert.That(config.AutomaticRecoveryPerSecond, Is.EqualTo(8f));
+            Assert.That(config.RecoveryPerHit, Is.EqualTo(12f));
+            Assert.That(config.IsValid, Is.True);
 
             Object.DestroyImmediate(config);
         }

@@ -114,7 +114,8 @@ namespace JustTest.Game.Combat
                 movementController.FacingDirection,
                 attackDefinition.HitReaction,
                 attackDefinition.StatusApplication,
-                attackDefinition.AllowFriendlyFire);
+                attackDefinition.AllowFriendlyFire,
+                attackDefinition.IgnorePostHitInvulnerability);
             activeAttack.HitResolved += OnAttackHitResolved;
             timeline.Start();
         }

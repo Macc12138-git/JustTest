@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d9154885921c409f94ab5155a513d27, type: 3}
+  m_Name: PrototypeSwordQte
+  m_EditorClassIdentifier: 
+  motionMode: 0
+  maximumTriggerDistance: 4.5
+  approachSpeed: 22
+  approachTimeout: 0.3
+  horizontalTargetDistance: 0.75
+  verticalTargetOffset: 0
+  stoppingDistance: 0.06
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  grantInvulnerability: 1
+  strikes:
+  - attack: {fileID: 11400000, guid: 1119612549fff4e2da63849f8b7283be, type: 2}
+    hitboxOffset: {x: 0.75, y: 0}
+    hitboxSize: {x: 1.5, y: 1.2}
+    movementVelocity: {x: 8, y: 0}
+  completionVelocity: {x: 2, y: 0}

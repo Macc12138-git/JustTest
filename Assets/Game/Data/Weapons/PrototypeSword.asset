@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: Sword
   basicAttack: {fileID: 11400000, guid: 02a4b356e769b4e74b74360fc6a293d8, type: 2}
+  skill: {fileID: 11400000, guid: a5b324c74ef1744f386483bbe4fbefdf, type: 2}
   qteTriggerStatus: 1
+  qteAction: {fileID: 11400000, guid: 07395258b3d144435a1ac7effe9393e7, type: 2}
   debugColor: {r: 0.35, g: 0.75, b: 1, a: 1}
