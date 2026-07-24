@@ -164,6 +164,7 @@ namespace JustTest.Game.Weapons
 
         private void StartSkill(WeaponSkillDefinition definition)
         {
+            attackRunner.CancelAttack();
             activeDefinition = definition;
             attackDirection = movementController.FacingDirection == -1 ? -1 : 1;
             LastCancelReason = WeaponSkillCancelReason.None;

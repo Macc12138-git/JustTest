@@ -88,6 +88,7 @@ namespace JustTest.Game.Player
 
         private void OnCombatStateReset()
         {
+            attackRunner.CancelAttack();
             ReleaseOwnedLocks();
         }
 

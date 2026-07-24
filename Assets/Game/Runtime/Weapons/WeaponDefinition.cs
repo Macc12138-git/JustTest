@@ -7,7 +7,7 @@ namespace JustTest.Game.Weapons
     public sealed class WeaponDefinition : ScriptableObject
     {
         [SerializeField] private string displayName = "Weapon";
-        [SerializeField] private AttackDefinition basicAttack;
+        [SerializeField] private WeaponBasicComboDefinition basicCombo;
         [SerializeField] private WeaponSkillDefinition skill;
         [SerializeField] private CombatStatusType qteTriggerStatus;
         [SerializeField] private WeaponQteDefinition qteAction;
@@ -15,7 +15,7 @@ namespace JustTest.Game.Weapons
 
         internal string DisplayName => string.IsNullOrWhiteSpace(displayName) ? name : displayName;
 
-        internal AttackDefinition BasicAttack => basicAttack;
+        internal WeaponBasicComboDefinition BasicCombo => basicCombo;
 
         internal WeaponSkillDefinition Skill => skill;
 
@@ -26,7 +26,8 @@ namespace JustTest.Game.Weapons
         internal Color DebugColor => debugColor;
 
         internal bool IsValid =>
-            basicAttack != null &&
+            basicCombo != null &&
+            basicCombo.IsValid &&
             skill != null &&
             skill.IsValid &&
             qteAction != null &&

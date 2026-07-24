@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1c03fc5ad67c4a3e95cad95593514f1, type: 3}
+  m_Name: PrototypeDualDaggersBasicCombo
+  m_EditorClassIdentifier: 
+  steps:
+  - attack: {fileID: 11400000, guid: acc35ce79f2b74f0fb8be590348ed85c, type: 2}
+    hitboxOffset: {x: 0.75, y: 0}
+    hitboxSize: {x: 0.95, y: 1.2}
+    forwardSpeed: 4.5
+    movementPhases: 2
+    inputBufferDuration: 0.14
+    chainStartProgress: 0.1
+  - attack: {fileID: 11400000, guid: 5840dd0b9710c4d189cd9f0352ed9c21, type: 2}
+    hitboxOffset: {x: 0.78, y: 0.05}
+    hitboxSize: {x: 1, y: 1.15}
+    forwardSpeed: 5
+    movementPhases: 2
+    inputBufferDuration: 0.14
+    chainStartProgress: 0.08
+  - attack: {fileID: 11400000, guid: e249ac5e44a5c4f498abc39727c9fba6, type: 2}
+    hitboxOffset: {x: 0.82, y: -0.05}
+    hitboxSize: {x: 1.05, y: 1.1}
+    forwardSpeed: 5.2
+    movementPhases: 2
+    inputBufferDuration: 0.14
+    chainStartProgress: 0.1
+  - attack: {fileID: 11400000, guid: b79218113684e498e896d2de5c7a8daa, type: 2}
+    hitboxOffset: {x: 0.85, y: 0.2}
+    hitboxSize: {x: 1.1, y: 1.5}
+    forwardSpeed: 5.8
+    movementPhases: 3
+    inputBufferDuration: 0.16
+    chainStartProgress: 0.35
+  comboResetDelay: 0.28
+  loopAfterFinalStep: 1

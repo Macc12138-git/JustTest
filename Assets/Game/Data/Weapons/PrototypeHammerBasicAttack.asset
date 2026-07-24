@@ -22,3 +22,4 @@ MonoBehaviour:
   appliedStatus: 0
   statusDuration: 0
   allowFriendlyFire: 0
+  ignorePostHitInvulnerability: 1

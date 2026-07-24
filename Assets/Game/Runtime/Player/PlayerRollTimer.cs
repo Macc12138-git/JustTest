@@ -31,6 +31,10 @@ namespace JustTest.Game.Player
             elapsed + TimeComparisonTolerance >= invulnerabilityStartTime &&
             elapsed + TimeComparisonTolerance < invulnerabilityStartTime + invulnerabilityDuration;
 
+        internal float NormalizedTime => IsRolling && duration > 0f
+            ? System.Math.Min(1f, System.Math.Max(0f, elapsed / duration))
+            : 0f;
+
         internal bool CanStart(float timestamp)
         {
             return !IsRolling && timestamp - lastStartTime >= minimumStartInterval;

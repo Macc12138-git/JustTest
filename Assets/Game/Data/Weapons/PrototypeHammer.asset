@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PrototypeHammer
   m_EditorClassIdentifier: 
   displayName: Hammer
-  basicAttack: {fileID: 11400000, guid: acc009f7003e1427190f413f0a19420a, type: 2}
+  basicCombo: {fileID: 11400000, guid: 6a7bc0f0f486f45c1a78d36f2232c67d, type: 2}
   skill: {fileID: 11400000, guid: ae0a8a55aedd346d2830b530cc172e91, type: 2}
   qteTriggerStatus: 3
   qteAction: {fileID: 11400000, guid: 5b4d3c13c86714b65b402fa91e024891, type: 2}

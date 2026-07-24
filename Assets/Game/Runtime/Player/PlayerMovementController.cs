@@ -148,6 +148,18 @@ namespace JustTest.Game.Player
             }
         }
 
+        internal void ApplyActionHorizontalVelocity(float horizontalVelocity)
+        {
+            if (!ready || rollController.IsRolling)
+            {
+                return;
+            }
+
+            Vector2 velocity = body.velocity;
+            velocity.x = horizontalVelocity;
+            body.velocity = velocity;
+        }
+
         public void Teleport(Vector2 position)
         {
             if (!ready)

@@ -43,6 +43,17 @@ namespace JustTest.Game.Combat
 
         internal bool IsRunning => Phase != AttackPhase.Idle;
 
+        internal float PhaseProgress
+        {
+            get
+            {
+                float duration = GetPhaseDuration(Phase);
+                return duration > 0f
+                    ? Math.Min(1f, Math.Max(0f, phaseElapsed / duration))
+                    : 0f;
+            }
+        }
+
         internal bool Start()
         {
             if (IsRunning)

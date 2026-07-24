@@ -16,6 +16,8 @@ namespace JustTest.Game.Player
         public bool IsRolling => timer != null && timer.IsRolling;
         public bool IsInvulnerable => timer != null && timer.IsInvulnerable;
 
+        public float NormalizedTime => timer?.NormalizedTime ?? 0f;
+
         internal int Direction { get; private set; } = 1;
         internal float Speed => config.Speed;
         internal float GravityMultiplier => config.GravityMultiplier;

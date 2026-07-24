@@ -122,6 +122,8 @@ namespace JustTest.Game.Combat
                 $"QTE Action: {weaponQteExecutor.Phase}, Strike: {weaponQteExecutor.CurrentStrikeIndex + 1}\n" +
                 $"QTE Pending: {GetWeaponName(weaponQteExecutor.PendingWeapon)}, Cancel: {weaponQteExecutor.LastCancelReason}\n" +
                 $"Attack: {attackRunner.Phase}\n" +
+                $"Combo: {attackRunner.CurrentComboStepIndex + 1}/{attackRunner.CurrentComboStepCount}, " +
+                $"Queued: {attackRunner.IsComboContinuationQueued}\n" +
                 $"Attack ID: {attackRunner.CurrentAttackInstanceId}\n" +
                 $"Last Hit: {outcomeText}\n" +
                 $"Target HP: {targetHealth.CurrentHealth:0}/{targetHealth.MaximumHealth:0}\n" +

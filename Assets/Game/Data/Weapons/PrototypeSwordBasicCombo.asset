@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1c03fc5ad67c4a3e95cad95593514f1, type: 3}
+  m_Name: PrototypeSwordBasicCombo
+  m_EditorClassIdentifier: 
+  steps:
+  - attack: {fileID: 11400000, guid: 02a4b356e769b4e74b74360fc6a293d8, type: 2}
+    hitboxOffset: {x: 0.9, y: 0}
+    hitboxSize: {x: 1.25, y: 1.35}
+    forwardSpeed: 2.4
+    movementPhases: 3
+    inputBufferDuration: 0.2
+    chainStartProgress: 0.25
+  - attack: {fileID: 11400000, guid: 26b38d80921f0457a9779400fe2e110a, type: 2}
+    hitboxOffset: {x: 0.95, y: 0.05}
+    hitboxSize: {x: 1.35, y: 1.35}
+    forwardSpeed: 2.8
+    movementPhases: 2
+    inputBufferDuration: 0.18
+    chainStartProgress: 0.2
+  - attack: {fileID: 11400000, guid: 9cd23663c92dd48ff930e304ab79d1a9, type: 2}
+    hitboxOffset: {x: 1.05, y: 0.12}
+    hitboxSize: {x: 1.5, y: 1.55}
+    forwardSpeed: 3.2
+    movementPhases: 3
+    inputBufferDuration: 0.22
+    chainStartProgress: 0.55
+  comboResetDelay: 0.38
+  loopAfterFinalStep: 1

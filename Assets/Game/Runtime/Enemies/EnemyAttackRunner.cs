@@ -12,6 +12,7 @@ namespace JustTest.Game.Enemies
         private AttackInstanceFactory attackFactory;
         private AttackTimeline timeline;
         private AttackInstance activeAttack;
+        private AttackDefinition activeDefinition;
         private Vector3 attackAnchorBaseLocalPosition;
         private bool cancelling;
         private bool ready;
@@ -21,6 +22,8 @@ namespace JustTest.Game.Enemies
 
         public AttackPhase Phase => timeline?.Phase ?? AttackPhase.Idle;
         public bool IsAttacking => timeline != null && timeline.IsRunning;
+        public float PhaseProgress => timeline?.PhaseProgress ?? 0f;
+        public AttackDefinition CurrentDefinition => activeDefinition;
         public int FacingDirection { get; private set; } = -1;
 
         private void Awake()
@@ -68,6 +71,7 @@ namespace JustTest.Game.Enemies
                 definition.StatusApplication,
                 definition.AllowFriendlyFire,
                 definition.IgnorePostHitInvulnerability);
+            activeDefinition = definition;
             timeline = new AttackTimeline(
                 definition.WindupDuration,
                 definition.ActiveDuration,
@@ -83,6 +87,7 @@ namespace JustTest.Game.Enemies
             {
                 hitbox?.EndAttack();
                 activeAttack = null;
+                activeDefinition = null;
                 return;
             }
 
@@ -134,6 +139,7 @@ namespace JustTest.Game.Enemies
             }
 
             activeAttack = null;
+            activeDefinition = null;
             cancelling = false;
         }
     }
