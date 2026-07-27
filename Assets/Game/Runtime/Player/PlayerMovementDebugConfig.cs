@@ -19,8 +19,7 @@ namespace JustTest.Game.Player
         [SerializeField] private Vector2 overlaySize = new Vector2(300f, 72f);
         [SerializeField] private bool logStateChanges;
 
-        [Header("Sandbox Reset")]
-        [SerializeField] private bool allowManualReset = true;
+        [Header("Out Of Bounds Respawn")]
         [SerializeField] private float respawnBelowY = -8f;
         [SerializeField, Min(0f)] private float respawnDelay;
 
@@ -34,7 +33,6 @@ namespace JustTest.Game.Player
         internal Vector2 OverlayPosition => overlayPosition;
         internal Vector2 OverlaySize => overlaySize;
         internal bool LogStateChanges => logStateChanges;
-        internal bool AllowManualReset => allowManualReset;
         internal float RespawnBelowY => respawnBelowY;
         internal float RespawnDelay => respawnDelay;
     }

@@ -7,7 +7,6 @@ namespace JustTest.Game.Combat
     {
         [SerializeField] private bool showOverlay = true;
         [SerializeField] private bool logHitResults;
-        [SerializeField] private bool allowManualReset = true;
         [SerializeField] private KeyCode normalEnemyAttackKey = KeyCode.U;
         [SerializeField] private KeyCode heavyEnemyAttackKey = KeyCode.I;
         [SerializeField] private KeyCode applyUnbalancedKey = KeyCode.F1;
@@ -27,8 +26,6 @@ namespace JustTest.Game.Combat
         internal bool ShowOverlay => showOverlay;
 
         internal bool LogHitResults => logHitResults;
-
-        internal bool AllowManualReset => allowManualReset;
 
         internal KeyCode NormalEnemyAttackKey => normalEnemyAttackKey;
 

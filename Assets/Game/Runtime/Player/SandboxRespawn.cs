@@ -1,5 +1,4 @@
 using System.Collections;
-using JustTest.Game.Input;
 using UnityEngine;
 
 namespace JustTest.Game.Player
@@ -7,7 +6,6 @@ namespace JustTest.Game.Player
     public sealed class SandboxRespawn : MonoBehaviour
     {
         [SerializeField] private PlayerMovementController movementController;
-        [SerializeField] private PlayerInputReader inputReader;
         [SerializeField] private Transform respawnPoint;
         [SerializeField] private PlayerMovementDebugConfig debugConfig;
 
@@ -18,7 +16,7 @@ namespace JustTest.Game.Player
         {
             fallbackRespawnPosition = transform.position;
 
-            if (movementController == null || inputReader == null || debugConfig == null)
+            if (movementController == null || debugConfig == null)
             {
                 Debug.LogError($"{nameof(SandboxRespawn)} is missing a required reference.", this);
                 enabled = false;
@@ -32,9 +30,8 @@ namespace JustTest.Game.Player
                 return;
             }
 
-            bool manualReset = debugConfig.AllowManualReset && inputReader.ResetPressedThisFrame;
             bool fellOutOfBounds = transform.position.y < debugConfig.RespawnBelowY;
-            if (manualReset || fellOutOfBounds)
+            if (fellOutOfBounds)
             {
                 respawnRoutine = StartCoroutine(RespawnAfterDelay());
             }

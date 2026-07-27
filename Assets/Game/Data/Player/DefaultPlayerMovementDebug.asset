@@ -22,6 +22,5 @@ MonoBehaviour:
   overlayPosition: {x: 16, y: 16}
   overlaySize: {x: 300, y: 72}
   logStateChanges: 0
-  allowManualReset: 1
   respawnBelowY: -8
   respawnDelay: 0

@@ -82,13 +82,6 @@ namespace JustTest.Game.Weapons
                 return;
             }
 
-            if (inputReader.ResetPressedThisFrame)
-            {
-                ClearOpportunity();
-                weaponLoadout.ResetActiveSlot();
-                return;
-            }
-
             int requestedSlot = inputReader.WeaponSlotPressedThisFrame;
             if (requestedSlot < 0)
             {

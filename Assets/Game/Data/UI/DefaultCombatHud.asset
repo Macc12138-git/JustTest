@@ -23,6 +23,9 @@ MonoBehaviour:
   emptySlotColor: {r: 0.13, g: 0.14, b: 0.16, a: 0.82}
   availableSkillColor: {r: 1, g: 1, b: 1, a: 1}
   unavailableSkillColor: {r: 1, g: 0.3, b: 0.28, a: 1}
+  defeatOverlayColor: {r: 0.02, g: 0.02, b: 0.025, a: 0.72}
+  defeatTitleColor: {r: 0.95, g: 0.2, b: 0.18, a: 1}
+  restartingTitleColor: {r: 1, g: 1, b: 1, a: 1}
   lowHealthThreshold: 0.25
   qtePulseCyclesPerSecond: 2.5
   qtePulseMinimumAlpha: 0.55

@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showOverlay: 1
   logHitResults: 0
-  allowManualReset: 1
   normalEnemyAttackKey: 117
   heavyEnemyAttackKey: 105
   applyUnbalancedKey: 282

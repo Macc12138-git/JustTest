@@ -8,6 +8,7 @@ namespace JustTest.Game.Enemies
     {
         [SerializeField] private MeleeEnemyConfig config;
         [SerializeField] private Transform target;
+        [SerializeField] private HealthComponent targetHealth;
         [SerializeField] private HealthComponent health;
         [SerializeField] private DamageReceiver damageReceiver;
         [SerializeField] private CombatReactionReceiver reactionReceiver;
@@ -28,6 +29,7 @@ namespace JustTest.Game.Enemies
             ready =
                 config != null &&
                 target != null &&
+                targetHealth != null &&
                 health != null &&
                 damageReceiver != null &&
                 reactionReceiver != null &&
@@ -55,6 +57,7 @@ namespace JustTest.Game.Enemies
             }
 
             health.Died += OnDied;
+            targetHealth.Died += OnTargetDied;
             damageReceiver.CombatStateReset += OnCombatStateReset;
             attackRunner.AttackEnded += OnAttackEnded;
         }
@@ -69,6 +72,12 @@ namespace JustTest.Game.Enemies
             if (health.IsDead)
             {
                 EnterInterruptedState(MeleeEnemyDecisionState.Dead, false);
+                return;
+            }
+
+            if (targetHealth.IsDead)
+            {
+                EnterInterruptedState(MeleeEnemyDecisionState.PlayerDefeated, true);
                 return;
             }
 
@@ -131,6 +140,11 @@ namespace JustTest.Game.Enemies
             if (health != null)
             {
                 health.Died -= OnDied;
+            }
+
+            if (targetHealth != null)
+            {
+                targetHealth.Died -= OnTargetDied;
             }
 
             if (damageReceiver != null)
@@ -201,6 +215,11 @@ namespace JustTest.Game.Enemies
         private void OnDied()
         {
             EnterInterruptedState(MeleeEnemyDecisionState.Dead, false);
+        }
+
+        private void OnTargetDied()
+        {
+            EnterInterruptedState(MeleeEnemyDecisionState.PlayerDefeated, true);
         }
 
         private void OnCombatStateReset()

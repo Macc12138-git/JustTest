@@ -8,6 +8,7 @@ namespace JustTest.Game.Enemies
         AttackCooldown = 3,
         Attack = 4,
         Controlled = 5,
-        Dead = 6
+        Dead = 6,
+        PlayerDefeated = 7
     }
 }

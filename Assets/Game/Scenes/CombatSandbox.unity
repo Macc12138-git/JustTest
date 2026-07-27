@@ -328,6 +328,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc10fbcd4daef46fba47503c16176f08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &99330074
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 99330075}
+  - component: {fileID: 99330076}
+  - component: {fileID: 99330079}
+  - component: {fileID: 99330078}
+  - component: {fileID: 99330080}
+  - component: {fileID: 99330081}
+  m_Layer: 0
+  m_Name: Runtime
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &69075209
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,27 +491,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 561591777}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &99330074
-GameObject:
+--- !u!114 &99330081
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 99330075}
-  - component: {fileID: 99330076}
-  - component: {fileID: 99330077}
-  - component: {fileID: 99330079}
-  - component: {fileID: 99330078}
-  - component: {fileID: 99330080}
-  m_Layer: 0
-  m_Name: Runtime
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_GameObject: {fileID: 99330074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3342dc46909946bf89a476cd576466e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config: {fileID: 11400000, guid: 5025ffd4629dd4f7eb15ca9651be1b48, type: 2}
+  inputReader: {fileID: 1684092186}
+  playerHealth: {fileID: 1684092191}
+  playerMovement: {fileID: 1684092183}
+  hitStopController: {fileID: 99330079}
 --- !u!4 &99330075
 Transform:
   m_ObjectHideFlags: 0
@@ -507,7 +524,7 @@ Transform:
   - {fileID: 1243748540}
   m_Father: {fileID: 367073560}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &99330076
+--- !u!114 &99330080
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -516,33 +533,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 99330074}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36ed5b5b25fb64382a3e0c814a8a9df3, type: 3}
+  m_Script: {fileID: 11500000, guid: b3350a35efe014ae68743c0774bacbf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputReader: {fileID: 1684092186}
-  targets:
-  - {fileID: 1684092177}
-  - {fileID: 1308302730}
-  - {fileID: 1420110309}
-  config: {fileID: 11400000, guid: 0ebdf2e9d4aeb4d3ab967de141298896, type: 2}
---- !u!114 &99330077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 99330074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 006f1449e40a14d5e80b15aacf015082, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sourceAnchor: {fileID: 1684092189}
-  target: {fileID: 1308302730}
-  unbalancedAttack: {fileID: 11400000, guid: 23c2562c40283465487d5e2874120680, type: 2}
-  airborneAttack: {fileID: 11400000, guid: b34336f7d5175419da650243ac66731e, type: 2}
-  stunnedAttack: {fileID: 11400000, guid: e41514c3eede84075946125f0f5b40c3, type: 2}
-  config: {fileID: 11400000, guid: 0ebdf2e9d4aeb4d3ab967de141298896, type: 2}
 --- !u!114 &99330078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -590,7 +583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b674c4fa34845e78d5b8d7a4ebd363, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &99330080
+--- !u!114 &99330076
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -599,9 +592,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 99330074}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3350a35efe014ae68743c0774bacbf5, type: 3}
+  m_Script: {fileID: 11500000, guid: 006f1449e40a14d5e80b15aacf015082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sourceAnchor: {fileID: 1684092189}
+  target: {fileID: 1308302730}
+  unbalancedAttack: {fileID: 11400000, guid: 23c2562c40283465487d5e2874120680, type: 2}
+  airborneAttack: {fileID: 11400000, guid: b34336f7d5175419da650243ac66731e, type: 2}
+  stunnedAttack: {fileID: 11400000, guid: e41514c3eede84075946125f0f5b40c3, type: 2}
+  config: {fileID: 11400000, guid: 0ebdf2e9d4aeb4d3ab967de141298896, type: 2}
 --- !u!1 &202838088
 GameObject:
   m_ObjectHideFlags: 0
@@ -2733,6 +2732,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: b151f588d16874b3eb8865f48c039dc9, type: 2}
   target: {fileID: 1684092189}
+  targetHealth: {fileID: 1684092191}
   health: {fileID: 1420110311}
   damageReceiver: {fileID: 1420110309}
   reactionReceiver: {fileID: 1420110307}
@@ -3428,6 +3428,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6173354016333399316, guid: 33c3f9e2588e74b00b9bc094f0ee035d,
+        type: 3}
+      propertyPath: runController
+      value: 
+      objectReference: {fileID: 99330081}
     - target: {fileID: 8566870208373410875, guid: 33c3f9e2588e74b00b9bc094f0ee035d,
         type: 3}
       propertyPath: qteExecutor
