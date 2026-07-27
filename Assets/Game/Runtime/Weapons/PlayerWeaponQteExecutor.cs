@@ -39,6 +39,8 @@ namespace JustTest.Game.Weapons
 
         internal event Action<HitResult> HitResolved;
 
+        internal event Action ExecutionStateChanged;
+
         internal bool IsExecuting => Phase != WeaponQteExecutionPhase.Idle;
 
         internal WeaponQteExecutionPhase Phase { get; private set; }
@@ -203,6 +205,7 @@ namespace JustTest.Game.Weapons
             }
 
             Phase = WeaponQteExecutionPhase.Approach;
+            ExecutionStateChanged?.Invoke();
             return true;
         }
 
@@ -217,6 +220,7 @@ namespace JustTest.Game.Weapons
             LastCancelReason = reason;
             CleanupAction();
             movementController.ResetMotion();
+            ExecutionStateChanged?.Invoke();
             Cancelled?.Invoke(cancelledSelection, reason);
         }
 
@@ -292,7 +296,8 @@ namespace JustTest.Game.Weapons
                 attackDefinition.HitReaction,
                 attackDefinition.StatusApplication,
                 attackDefinition.AllowFriendlyFire,
-                attackDefinition.IgnorePostHitInvulnerability);
+                attackDefinition.IgnorePostHitInvulnerability,
+                attackDefinition.FeedbackTier);
             activeAttack.HitResolved += OnAttackHitResolved;
 
             strikeTimeline = new AttackTimeline(
@@ -385,6 +390,7 @@ namespace JustTest.Game.Weapons
             completionVelocity.x = Mathf.Abs(completionVelocity.x) * attackDirection;
             CleanupAction();
             movementController.ApplyExternalVelocity(completionVelocity);
+            ExecutionStateChanged?.Invoke();
             Completed?.Invoke(completedSelection);
         }
 

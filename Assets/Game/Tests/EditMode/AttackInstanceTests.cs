@@ -159,6 +159,26 @@ namespace JustTest.Game.Tests
             Assert.That(target.LastRequest.IgnorePostHitInvulnerability, Is.True);
         }
 
+        [Test]
+        public void TryHit_PropagatesCombatFeedbackTier()
+        {
+            AttackInstance attack = factory.Create(
+                100,
+                CombatFaction.Player,
+                1f,
+                1,
+                default,
+                default,
+                false,
+                false,
+                CombatFeedbackTier.Heavy);
+            FakeHitTarget target = new FakeHitTarget(200, 100f);
+
+            attack.TryHit(target);
+
+            Assert.That(target.LastRequest.FeedbackTier, Is.EqualTo(CombatFeedbackTier.Heavy));
+        }
+
         [TestCase(0, CombatFaction.Player, 10f)]
         [TestCase(100, CombatFaction.None, 10f)]
         [TestCase(100, CombatFaction.Player, 0f)]

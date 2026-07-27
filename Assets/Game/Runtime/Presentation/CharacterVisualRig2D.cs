@@ -23,6 +23,9 @@ namespace JustTest.Game.Presentation
         private Vector3 offhandPivotBasePosition;
         private Vector3 offhandPivotBaseScale;
         private float offhandPivotBaseRotation;
+        private EvaluatedMotionPose2D blendedBasePose = EvaluatedMotionPose2D.Identity;
+        private EvaluatedMotionPose2D feedbackPose = EvaluatedMotionPose2D.Identity;
+        private int facingDirection = 1;
         private bool ready;
 
         private void Awake()
@@ -59,6 +62,8 @@ namespace JustTest.Game.Presentation
         {
             if (ready)
             {
+                blendedBasePose = EvaluatedMotionPose2D.Identity;
+                feedbackPose = EvaluatedMotionPose2D.Identity;
                 ApplyPose(EvaluatedMotionPose2D.Identity, float.PositiveInfinity, 0f);
             }
         }
@@ -71,11 +76,14 @@ namespace JustTest.Game.Presentation
             }
 
             int facing = direction < 0 ? -1 : 1;
+            facingDirection = facing;
             rigRoot.localScale = new Vector3(
                 Mathf.Abs(rigBaseScale.x) * facing,
                 rigBaseScale.y,
                 rigBaseScale.z);
         }
+
+        internal int FacingDirection => facingDirection;
 
         internal void ApplyWeaponStyle(CombatMotionProfile profile)
         {
@@ -126,33 +134,47 @@ namespace JustTest.Game.Presentation
             float blend = float.IsPositiveInfinity(blendSpeed)
                 ? 1f
                 : Mathf.Clamp01(Mathf.Max(0f, blendSpeed) * Mathf.Max(0f, deltaTime));
+            blendedBasePose = EvaluatedMotionPose2D.Lerp(blendedBasePose, pose, blend);
+            EvaluatedMotionPose2D composedPose = EvaluatedMotionPose2D.ComposeAdditive(
+                blendedBasePose,
+                feedbackPose);
             ApplyTransform(
                 bodyRoot,
                 bodyBasePosition,
                 bodyBaseRotation,
                 bodyBaseScale,
-                pose.BodyOffset,
-                pose.BodyRotation,
-                pose.BodyScale,
-                blend);
+                composedPose.BodyOffset,
+                composedPose.BodyRotation,
+                composedPose.BodyScale,
+                1f);
             ApplyTransform(
                 mainWeaponPivot,
                 mainPivotBasePosition,
                 mainPivotBaseRotation,
                 mainPivotBaseScale,
-                pose.MainWeaponOffset,
-                pose.MainWeaponRotation,
-                pose.MainWeaponScale,
-                blend);
+                composedPose.MainWeaponOffset,
+                composedPose.MainWeaponRotation,
+                composedPose.MainWeaponScale,
+                1f);
             ApplyTransform(
                 offhandWeaponPivot,
                 offhandPivotBasePosition,
                 offhandPivotBaseRotation,
                 offhandPivotBaseScale,
-                pose.OffhandWeaponOffset,
-                pose.OffhandWeaponRotation,
-                pose.OffhandWeaponScale,
-                blend);
+                composedPose.OffhandWeaponOffset,
+                composedPose.OffhandWeaponRotation,
+                composedPose.OffhandWeaponScale,
+                1f);
+        }
+
+        internal void SetFeedbackPose(in EvaluatedMotionPose2D pose)
+        {
+            feedbackPose = pose;
+        }
+
+        internal void ClearFeedbackPose()
+        {
+            feedbackPose = EvaluatedMotionPose2D.Identity;
         }
 
         private void SetWeaponsVisible(bool mainVisible, bool offhandVisible)

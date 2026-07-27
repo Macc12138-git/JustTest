@@ -17,7 +17,8 @@ namespace JustTest.Game.Combat
                 default,
                 default,
                 allowFriendlyFire,
-                false)
+                false,
+                CombatFeedbackTier.None)
         {
         }
 
@@ -38,7 +39,8 @@ namespace JustTest.Game.Combat
                 reaction,
                 default,
                 allowFriendlyFire,
-                false)
+                false,
+                CombatFeedbackTier.None)
         {
         }
 
@@ -51,7 +53,8 @@ namespace JustTest.Game.Combat
             HitReactionData reaction,
             CombatStatusApplication status,
             bool allowFriendlyFire = false,
-            bool ignorePostHitInvulnerability = false)
+            bool ignorePostHitInvulnerability = false,
+            CombatFeedbackTier feedbackTier = CombatFeedbackTier.None)
         {
             AttackInstanceId = attackInstanceId;
             SourceId = sourceId;
@@ -62,6 +65,7 @@ namespace JustTest.Game.Combat
             Status = status;
             AllowFriendlyFire = allowFriendlyFire;
             IgnorePostHitInvulnerability = ignorePostHitInvulnerability;
+            FeedbackTier = feedbackTier;
         }
 
         public int AttackInstanceId { get; }
@@ -82,6 +86,8 @@ namespace JustTest.Game.Combat
 
         public bool IgnorePostHitInvulnerability { get; }
 
+        public CombatFeedbackTier FeedbackTier { get; }
+
         internal bool IsValid =>
             AttackInstanceId != 0 &&
             SourceId != 0 &&
@@ -91,6 +97,8 @@ namespace JustTest.Game.Combat
             !float.IsNaN(Damage) &&
             !float.IsInfinity(Damage) &&
             Reaction.IsValid &&
-            Status.IsValid;
+            Status.IsValid &&
+            FeedbackTier >= CombatFeedbackTier.None &&
+            FeedbackTier <= CombatFeedbackTier.Heavy;
     }
 }

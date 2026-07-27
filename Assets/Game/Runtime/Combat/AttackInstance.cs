@@ -12,6 +12,7 @@ namespace JustTest.Game.Combat
         private readonly int attackDirection;
         private readonly HitReactionData reaction;
         private readonly CombatStatusApplication status;
+        private readonly CombatFeedbackTier feedbackTier;
         private readonly bool allowFriendlyFire;
         private readonly bool ignorePostHitInvulnerability;
 
@@ -24,7 +25,8 @@ namespace JustTest.Game.Combat
             HitReactionData reaction,
             CombatStatusApplication status,
             bool allowFriendlyFire,
-            bool ignorePostHitInvulnerability)
+            bool ignorePostHitInvulnerability,
+            CombatFeedbackTier feedbackTier)
         {
             InstanceId = instanceId;
             this.sourceId = sourceId;
@@ -33,6 +35,7 @@ namespace JustTest.Game.Combat
             this.attackDirection = attackDirection;
             this.reaction = reaction.ToWorld(attackDirection);
             this.status = status;
+            this.feedbackTier = feedbackTier;
             this.allowFriendlyFire = allowFriendlyFire;
             this.ignorePostHitInvulnerability = ignorePostHitInvulnerability;
         }
@@ -79,7 +82,8 @@ namespace JustTest.Game.Combat
                 reaction,
                 status,
                 allowFriendlyFire,
-                ignorePostHitInvulnerability);
+                ignorePostHitInvulnerability,
+                feedbackTier);
             return Publish(target.ReceiveHit(request));
         }
 

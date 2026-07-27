@@ -20,7 +20,8 @@ namespace JustTest.Game.Combat
                 default,
                 default,
                 allowFriendlyFire,
-                false);
+                false,
+                CombatFeedbackTier.None);
         }
 
         internal AttackInstance Create(
@@ -39,7 +40,8 @@ namespace JustTest.Game.Combat
                 reaction,
                 default,
                 allowFriendlyFire,
-                false);
+                false,
+                CombatFeedbackTier.None);
         }
 
         internal AttackInstance Create(
@@ -50,7 +52,8 @@ namespace JustTest.Game.Combat
             HitReactionData reaction,
             CombatStatusApplication status,
             bool allowFriendlyFire = false,
-            bool ignorePostHitInvulnerability = false)
+            bool ignorePostHitInvulnerability = false,
+            CombatFeedbackTier feedbackTier = CombatFeedbackTier.None)
         {
             if (sourceId == 0)
             {
@@ -82,6 +85,11 @@ namespace JustTest.Game.Combat
                 throw new ArgumentOutOfRangeException(nameof(status));
             }
 
+            if (feedbackTier < CombatFeedbackTier.None || feedbackTier > CombatFeedbackTier.Heavy)
+            {
+                throw new ArgumentOutOfRangeException(nameof(feedbackTier));
+            }
+
             int instanceId = nextInstanceId;
             nextInstanceId = nextInstanceId == int.MaxValue ? 1 : nextInstanceId + 1;
             return new AttackInstance(
@@ -93,7 +101,8 @@ namespace JustTest.Game.Combat
                 reaction,
                 status,
                 allowFriendlyFire,
-                ignorePostHitInvulnerability);
+                ignorePostHitInvulnerability,
+                feedbackTier);
         }
     }
 }

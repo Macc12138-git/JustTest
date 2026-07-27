@@ -93,5 +93,21 @@ namespace JustTest.Game.Presentation
                 Mathf.LerpAngle(from.OffhandWeaponRotation, to.OffhandWeaponRotation, t),
                 Vector2.LerpUnclamped(from.OffhandWeaponScale, to.OffhandWeaponScale, t));
         }
+
+        internal static EvaluatedMotionPose2D ComposeAdditive(
+            in EvaluatedMotionPose2D basePose,
+            in EvaluatedMotionPose2D additivePose)
+        {
+            return new EvaluatedMotionPose2D(
+                basePose.BodyOffset + additivePose.BodyOffset,
+                basePose.BodyRotation + additivePose.BodyRotation,
+                Vector2.Scale(basePose.BodyScale, additivePose.BodyScale),
+                basePose.MainWeaponOffset + additivePose.MainWeaponOffset,
+                basePose.MainWeaponRotation + additivePose.MainWeaponRotation,
+                Vector2.Scale(basePose.MainWeaponScale, additivePose.MainWeaponScale),
+                basePose.OffhandWeaponOffset + additivePose.OffhandWeaponOffset,
+                basePose.OffhandWeaponRotation + additivePose.OffhandWeaponRotation,
+                Vector2.Scale(basePose.OffhandWeaponScale, additivePose.OffhandWeaponScale));
+        }
     }
 }

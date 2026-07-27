@@ -70,7 +70,8 @@ namespace JustTest.Game.Enemies
                 definition.HitReaction,
                 definition.StatusApplication,
                 definition.AllowFriendlyFire,
-                definition.IgnorePostHitInvulnerability);
+                definition.IgnorePostHitInvulnerability,
+                definition.FeedbackTier);
             activeDefinition = definition;
             timeline = new AttackTimeline(
                 definition.WindupDuration,

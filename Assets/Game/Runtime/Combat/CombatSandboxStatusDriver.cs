@@ -69,7 +69,9 @@ namespace JustTest.Game.Combat
                 direction,
                 definition.HitReaction,
                 definition.StatusApplication,
-                definition.AllowFriendlyFire);
+                definition.AllowFriendlyFire,
+                definition.IgnorePostHitInvulnerability,
+                definition.FeedbackTier);
             attack.TryHit(target);
         }
     }

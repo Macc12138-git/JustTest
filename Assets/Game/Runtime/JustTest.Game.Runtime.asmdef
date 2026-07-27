@@ -1,7 +1,9 @@
 {
   "name": "JustTest.Game.Runtime",
   "rootNamespace": "JustTest.Game",
-  "references": [],
+  "references": [
+    "UnityEngine.UI"
+  ],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,

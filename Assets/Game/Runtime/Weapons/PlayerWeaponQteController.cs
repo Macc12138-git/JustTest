@@ -18,6 +18,7 @@ namespace JustTest.Game.Weapons
 
         private readonly WeaponQteOpportunityState opportunity = new WeaponQteOpportunityState();
         private CombatStatusController currentTarget;
+        private float opportunityDuration;
         private bool ready;
 
         internal event Action OpportunityChanged;
@@ -29,6 +30,20 @@ namespace JustTest.Game.Weapons
         internal CombatStatusType OpportunityStatus => opportunity.StatusType;
 
         internal int OpportunityApplicationId => opportunity.ApplicationId;
+
+        internal float OpportunityNormalizedTime
+        {
+            get
+            {
+                if (!opportunity.IsOpen || currentTarget == null || opportunityDuration <= 0f)
+                {
+                    return 0f;
+                }
+
+                float remainingDuration = currentTarget.GetRemainingDuration(opportunity.StatusType);
+                return Mathf.Clamp01(remainingDuration / opportunityDuration);
+            }
+        }
 
         private void Awake()
         {
@@ -121,6 +136,7 @@ namespace JustTest.Game.Weapons
                 signal.StatusEvent,
                 candidateMask);
             currentTarget = opened ? signal.Target : null;
+            opportunityDuration = opened ? signal.StatusEvent.Duration : 0f;
             OpportunityChanged?.Invoke();
         }
 
@@ -135,6 +151,7 @@ namespace JustTest.Game.Weapons
             }
 
             currentTarget = null;
+            opportunityDuration = 0f;
             OpportunityChanged?.Invoke();
         }
 
@@ -168,6 +185,7 @@ namespace JustTest.Game.Weapons
             }
 
             currentTarget = null;
+            opportunityDuration = 0f;
             OpportunityChanged?.Invoke();
             QteSelected?.Invoke(selection);
         }
@@ -187,10 +205,12 @@ namespace JustTest.Game.Weapons
             if (!opportunity.Clear())
             {
                 currentTarget = null;
+                opportunityDuration = 0f;
                 return;
             }
 
             currentTarget = null;
+            opportunityDuration = 0f;
             OpportunityChanged?.Invoke();
         }
     }

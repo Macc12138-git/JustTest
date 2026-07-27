@@ -82,7 +82,9 @@ namespace JustTest.Game.Combat
                 direction,
                 definition.HitReaction,
                 definition.StatusApplication,
-                definition.AllowFriendlyFire);
+                definition.AllowFriendlyFire,
+                definition.IgnorePostHitInvulnerability,
+                definition.FeedbackTier);
             timeline = new AttackTimeline(
                 definition.WindupDuration,
                 definition.ActiveDuration,

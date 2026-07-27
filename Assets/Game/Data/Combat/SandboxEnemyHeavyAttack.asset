@@ -19,4 +19,8 @@ MonoBehaviour:
   inputBufferDuration: 0.1
   hitStunDuration: 0.35
   knockbackVelocity: {x: 7, y: 3}
+  appliedStatus: 0
+  statusDuration: 0
   allowFriendlyFire: 0
+  ignorePostHitInvulnerability: 0
+  feedbackTier: 3

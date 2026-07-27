@@ -16,6 +16,7 @@ namespace JustTest.Game.Combat
         [SerializeField, Min(0f)] private float statusDuration;
         [SerializeField] private bool allowFriendlyFire;
         [SerializeField] private bool ignorePostHitInvulnerability;
+        [SerializeField] private CombatFeedbackTier feedbackTier = CombatFeedbackTier.Light;
 
         internal float Damage => damage;
 
@@ -38,6 +39,8 @@ namespace JustTest.Game.Combat
         internal bool AllowFriendlyFire => allowFriendlyFire;
 
         internal bool IgnorePostHitInvulnerability => ignorePostHitInvulnerability;
+
+        internal CombatFeedbackTier FeedbackTier => feedbackTier;
 
         private void OnValidate()
         {

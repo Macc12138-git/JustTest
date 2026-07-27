@@ -22,3 +22,5 @@ MonoBehaviour:
   appliedStatus: 3
   statusDuration: 1
   allowFriendlyFire: 0
+  ignorePostHitInvulnerability: 0
+  feedbackTier: 2

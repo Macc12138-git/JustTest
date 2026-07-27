@@ -282,7 +282,8 @@ namespace JustTest.Game.Combat
                 activeDefinition.HitReaction,
                 activeDefinition.StatusApplication,
                 activeDefinition.AllowFriendlyFire,
-                activeDefinition.IgnorePostHitInvulnerability);
+                activeDefinition.IgnorePostHitInvulnerability,
+                activeDefinition.FeedbackTier);
             activeAttack.HitResolved += OnAttackHitResolved;
 
             timeline = new AttackTimeline(
