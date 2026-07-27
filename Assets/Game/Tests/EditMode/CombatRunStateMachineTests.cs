@@ -29,6 +29,29 @@ namespace JustTest.Game.Tests.EditMode
         }
 
         [Test]
+        public void VictoryTransitionsFromActive()
+        {
+            CombatRunStateMachine stateMachine = new CombatRunStateMachine();
+
+            bool changed = stateMachine.TryMarkVictory();
+
+            Assert.That(changed, Is.True);
+            Assert.That(stateMachine.State, Is.EqualTo(CombatRunState.Victory));
+        }
+
+        [Test]
+        public void VictoryCannotReplacePlayerDefeat()
+        {
+            CombatRunStateMachine stateMachine = new CombatRunStateMachine();
+            stateMachine.TryMarkPlayerDefeated();
+
+            bool changed = stateMachine.TryMarkVictory();
+
+            Assert.That(changed, Is.False);
+            Assert.That(stateMachine.State, Is.EqualTo(CombatRunState.PlayerDefeated));
+        }
+
+        [Test]
         public void ActiveRunCanRestartWhenEnabled()
         {
             CombatRunStateMachine stateMachine = new CombatRunStateMachine();
@@ -55,6 +78,18 @@ namespace JustTest.Game.Tests.EditMode
         {
             CombatRunStateMachine stateMachine = new CombatRunStateMachine();
             stateMachine.TryMarkPlayerDefeated();
+
+            bool changed = stateMachine.TryBeginRestart(false);
+
+            Assert.That(changed, Is.True);
+            Assert.That(stateMachine.State, Is.EqualTo(CombatRunState.Restarting));
+        }
+
+        [Test]
+        public void VictoriousRunCanRestart()
+        {
+            CombatRunStateMachine stateMachine = new CombatRunStateMachine();
+            stateMachine.TryMarkVictory();
 
             bool changed = stateMachine.TryBeginRestart(false);
 

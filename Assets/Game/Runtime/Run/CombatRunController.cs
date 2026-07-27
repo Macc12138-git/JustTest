@@ -16,6 +16,7 @@ namespace JustTest.Game.Run
         [SerializeField] private HealthComponent playerHealth;
         [SerializeField] private PlayerMovementController playerMovement;
         [SerializeField] private CombatHitStopController hitStopController;
+        [SerializeField] private CombatPlatformController2D combatPlatform;
 
         private readonly CombatRunStateMachine stateMachine = new CombatRunStateMachine();
         private Coroutine restartRoutine;
@@ -34,7 +35,8 @@ namespace JustTest.Game.Run
                 inputReader != null &&
                 playerHealth != null &&
                 playerMovement != null &&
-                hitStopController != null;
+                hitStopController != null &&
+                combatPlatform != null;
             if (ready)
             {
                 return;
@@ -49,6 +51,7 @@ namespace JustTest.Game.Run
             if (ready)
             {
                 playerHealth.Died += OnPlayerDied;
+                combatPlatform.Completed += OnPlatformCompleted;
             }
         }
 
@@ -59,7 +62,8 @@ namespace JustTest.Game.Run
                 return;
             }
 
-            if (stateMachine.State == CombatRunState.PlayerDefeated &&
+            if ((stateMachine.State == CombatRunState.PlayerDefeated ||
+                 stateMachine.State == CombatRunState.Victory) &&
                 Time.unscaledTime < restartAvailableAt)
             {
                 return;
@@ -73,6 +77,11 @@ namespace JustTest.Game.Run
             if (playerHealth != null)
             {
                 playerHealth.Died -= OnPlayerDied;
+            }
+
+            if (combatPlatform != null)
+            {
+                combatPlatform.Completed -= OnPlatformCompleted;
             }
 
             if (restartRoutine != null)
@@ -94,7 +103,18 @@ namespace JustTest.Game.Run
                 return;
             }
 
-            restartAvailableAt = Time.unscaledTime + config.RestartInputDelayAfterDefeat;
+            restartAvailableAt = Time.unscaledTime + config.RestartInputDelayAfterResult;
+            RunStateChanged?.Invoke(stateMachine.State);
+        }
+
+        private void OnPlatformCompleted()
+        {
+            if (!stateMachine.TryMarkVictory())
+            {
+                return;
+            }
+
+            restartAvailableAt = Time.unscaledTime + config.RestartInputDelayAfterResult;
             RunStateChanged?.Invoke(stateMachine.State);
         }
 

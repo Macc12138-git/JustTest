@@ -18,6 +18,8 @@ namespace JustTest.Game.UI
         [SerializeField] private Color unavailableSkillColor = new Color(1f, 0.3f, 0.28f, 1f);
         [SerializeField] private Color defeatOverlayColor = new Color(0.02f, 0.02f, 0.025f, 0.72f);
         [SerializeField] private Color defeatTitleColor = new Color(0.95f, 0.2f, 0.18f, 1f);
+        [SerializeField] private Color victoryOverlayColor = new Color(0.02f, 0.06f, 0.04f, 0.72f);
+        [SerializeField] private Color victoryTitleColor = new Color(0.25f, 0.95f, 0.48f, 1f);
         [SerializeField] private Color restartingTitleColor = Color.white;
         [SerializeField, Range(0.01f, 1f)] private float lowHealthThreshold = 0.25f;
         [SerializeField, Min(0.01f)] private float qtePulseCyclesPerSecond = 2.5f;
@@ -36,6 +38,8 @@ namespace JustTest.Game.UI
         internal Color UnavailableSkillColor => unavailableSkillColor;
         internal Color DefeatOverlayColor => defeatOverlayColor;
         internal Color DefeatTitleColor => defeatTitleColor;
+        internal Color VictoryOverlayColor => victoryOverlayColor;
+        internal Color VictoryTitleColor => victoryTitleColor;
         internal Color RestartingTitleColor => restartingTitleColor;
         internal float LowHealthThreshold => lowHealthThreshold;
         internal float QtePulseCyclesPerSecond => qtePulseCyclesPerSecond;

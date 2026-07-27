@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JustTest.Game.Run
 {
@@ -6,22 +7,23 @@ namespace JustTest.Game.Run
     public sealed class CombatRunConfig : ScriptableObject
     {
         [SerializeField] private bool allowRestartWhileActive = true;
-        [SerializeField, Min(0f)] private float restartInputDelayAfterDefeat = 0.25f;
+        [FormerlySerializedAs("restartInputDelayAfterDefeat")]
+        [SerializeField, Min(0f)] private float restartInputDelayAfterResult = 0.25f;
         [SerializeField, Min(0f)] private float sceneReloadDelay = 0.05f;
 
         internal bool AllowRestartWhileActive => allowRestartWhileActive;
-        internal float RestartInputDelayAfterDefeat => restartInputDelayAfterDefeat;
+        internal float RestartInputDelayAfterResult => restartInputDelayAfterResult;
         internal float SceneReloadDelay => sceneReloadDelay;
 
         internal bool IsValid =>
-            IsFiniteNonNegative(restartInputDelayAfterDefeat) &&
+            IsFiniteNonNegative(restartInputDelayAfterResult) &&
             IsFiniteNonNegative(sceneReloadDelay);
 
         private void OnValidate()
         {
-            restartInputDelayAfterDefeat = Mathf.Max(
+            restartInputDelayAfterResult = Mathf.Max(
                 0f,
-                SanitizeFinite(restartInputDelayAfterDefeat));
+                SanitizeFinite(restartInputDelayAfterResult));
             sceneReloadDelay = Mathf.Max(0f, SanitizeFinite(sceneReloadDelay));
         }
 

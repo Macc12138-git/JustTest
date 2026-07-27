@@ -25,6 +25,8 @@ MonoBehaviour:
   unavailableSkillColor: {r: 1, g: 0.3, b: 0.28, a: 1}
   defeatOverlayColor: {r: 0.02, g: 0.02, b: 0.025, a: 0.72}
   defeatTitleColor: {r: 0.95, g: 0.2, b: 0.18, a: 1}
+  victoryOverlayColor: {r: 0.02, g: 0.06, b: 0.04, a: 0.72}
+  victoryTitleColor: {r: 0.25, g: 0.95, b: 0.48, a: 1}
   restartingTitleColor: {r: 1, g: 1, b: 1, a: 1}
   lowHealthThreshold: 0.25
   qtePulseCyclesPerSecond: 2.5

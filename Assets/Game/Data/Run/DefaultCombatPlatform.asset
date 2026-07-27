@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32e547ac7cf7f4b6192b4a3252f6ace9, type: 3}
-  m_Name: DefaultCombatRun
+  m_Script: {fileID: 11500000, guid: 7eeaf1ba526164d25b2a8374c26e0dbe, type: 3}
+  m_Name: DefaultCombatPlatform
   m_EditorClassIdentifier: 
-  allowRestartWhileActive: 1
-  restartInputDelayAfterResult: 0.25
-  sceneReloadDelay: 0.05
+  appearanceDelay: 0.45
+  sharedAttackInterval: 0.35
+  oneWayPlatformLayers:
+    serializedVersion: 2
+    m_Bits: 512

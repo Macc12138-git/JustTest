@@ -4,6 +4,7 @@ namespace JustTest.Game.Run
     {
         Active = 0,
         PlayerDefeated = 1,
-        Restarting = 2
+        Victory = 2,
+        Restarting = 3
     }
 }

@@ -13,12 +13,12 @@ namespace JustTest.Game.Tests.EditMode
             CombatRunConfig config = ScriptableObject.CreateInstance<CombatRunConfig>();
             try
             {
-                SetPrivateField(config, "restartInputDelayAfterDefeat", -1f);
+                SetPrivateField(config, "restartInputDelayAfterResult", -1f);
                 SetPrivateField(config, "sceneReloadDelay", float.NaN);
 
                 InvokeOnValidate(config);
 
-                Assert.That(config.RestartInputDelayAfterDefeat, Is.EqualTo(0f));
+                Assert.That(config.RestartInputDelayAfterResult, Is.EqualTo(0f));
                 Assert.That(config.SceneReloadDelay, Is.EqualTo(0f));
                 Assert.That(config.IsValid, Is.True);
             }

@@ -2,13 +2,13 @@ namespace JustTest.Game.Enemies
 {
     public enum MeleeEnemyDecisionState
     {
-        Idle = 0,
-        DirectChase = 1,
-        PathChase = 2,
-        AttackCooldown = 3,
+        Dormant = 0,
+        Observe = 1,
+        Reposition = 2,
+        WaitingForTurn = 3,
         Attack = 4,
         Controlled = 5,
-        Dead = 6,
-        PlayerDefeated = 7
+        PlayerDefeated = 6,
+        Dead = 7
     }
 }

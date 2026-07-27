@@ -15,6 +15,17 @@ namespace JustTest.Game.Run
             return true;
         }
 
+        internal bool TryMarkVictory()
+        {
+            if (State != CombatRunState.Active)
+            {
+                return false;
+            }
+
+            State = CombatRunState.Victory;
+            return true;
+        }
+
         internal bool TryBeginRestart(bool allowWhileActive)
         {
             if (State == CombatRunState.Restarting ||

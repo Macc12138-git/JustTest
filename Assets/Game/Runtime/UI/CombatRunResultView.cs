@@ -31,7 +31,6 @@ namespace JustTest.Game.UI
                 return;
             }
 
-            backgroundImage.color = config.DefeatOverlayColor;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
         }
@@ -64,10 +63,24 @@ namespace JustTest.Game.UI
         {
             bool visible = state != CombatRunState.Active;
             canvasGroup.alpha = visible ? 1f : 0f;
-            titleText.text = state == CombatRunState.Restarting ? "RESTARTING" : "DEFEAT";
-            titleText.color = state == CombatRunState.Restarting
-                ? config.RestartingTitleColor
-                : config.DefeatTitleColor;
+            switch (state)
+            {
+                case CombatRunState.Victory:
+                    backgroundImage.color = config.VictoryOverlayColor;
+                    titleText.text = "VICTORY";
+                    titleText.color = config.VictoryTitleColor;
+                    break;
+                case CombatRunState.Restarting:
+                    backgroundImage.color = config.DefeatOverlayColor;
+                    titleText.text = "RESTARTING";
+                    titleText.color = config.RestartingTitleColor;
+                    break;
+                default:
+                    backgroundImage.color = config.DefeatOverlayColor;
+                    titleText.text = "DEFEAT";
+                    titleText.color = config.DefeatTitleColor;
+                    break;
+            }
         }
     }
 }
