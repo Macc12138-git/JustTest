@@ -12,12 +12,20 @@ namespace JustTest.Game.Run
         [Header("Surface Validation")]
         [SerializeField] private LayerMask oneWayPlatformLayers;
 
+        [Header("Enemy Positioning")]
+        [SerializeField, Min(0f)] private float platformEdgePadding = 0.35f;
+        [SerializeField, Min(0f)] private float slotInnerPadding = 0.08f;
+
         internal float AppearanceDelay => appearanceDelay;
         internal float SharedAttackInterval => sharedAttackInterval;
+        internal float PlatformEdgePadding => platformEdgePadding;
+        internal float SlotInnerPadding => slotInnerPadding;
 
         internal bool IsValid =>
             IsFiniteNonNegative(appearanceDelay) &&
             IsFiniteNonNegative(sharedAttackInterval) &&
+            IsFiniteNonNegative(platformEdgePadding) &&
+            IsFiniteNonNegative(slotInnerPadding) &&
             oneWayPlatformLayers.value != 0;
 
         internal bool IsValidCombatSurface(Collider2D surface)
@@ -32,6 +40,8 @@ namespace JustTest.Game.Run
         {
             appearanceDelay = Mathf.Max(0f, SanitizeFinite(appearanceDelay));
             sharedAttackInterval = Mathf.Max(0f, SanitizeFinite(sharedAttackInterval));
+            platformEdgePadding = Mathf.Max(0f, SanitizeFinite(platformEdgePadding));
+            slotInnerPadding = Mathf.Max(0f, SanitizeFinite(slotInnerPadding));
         }
 
         private static bool IsLayerInMask(int layer, LayerMask layerMask)

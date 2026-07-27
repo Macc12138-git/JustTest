@@ -24,12 +24,13 @@ namespace JustTest.Game.Enemies
         [SerializeField] private AttackDefinition normalAttack;
         [SerializeField] private AttackDefinition heavyAttack;
 
-        private float anchorX;
         private float nextDecisionAt;
         private float nextAttackAt;
         private float nextProbeAttackAt;
         private float nextHeavyAttackAt;
         private float repositionEndsAt;
+        private float repositionTargetX;
+        private float repositionObservationDuration;
         private float closePresenceDuration;
         private float openingAvailableAt = float.PositiveInfinity;
         private int repositionDirection;
@@ -71,7 +72,6 @@ namespace JustTest.Game.Enemies
                 return;
             }
 
-            anchorX = transform.position.x;
             lastTargetAttackPhase = targetAttackRunner.Phase;
         }
 
@@ -181,7 +181,6 @@ namespace JustTest.Game.Enemies
             defeatNotified = false;
             currentAttackIsHeavy = false;
             closePresenceDuration = 0f;
-            anchorX = transform.position.x;
             nextDecisionAt = Time.time + config.InitialObservationDuration;
             nextProbeAttackAt = Time.time + config.MaximumPassiveDuration;
             nextHeavyAttackAt = Time.time + config.InitialHeavyAttackDelay;
@@ -295,15 +294,15 @@ namespace JustTest.Game.Enemies
                 return;
             }
 
-            if (horizontalDistance > config.PreferredMaximumDistance)
+            float desiredDistance = Mathf.Clamp(
+                horizontalDistance,
+                config.PreferredMinimumDistance,
+                config.PreferredMaximumDistance);
+            float desiredPositionX = target.position.x - targetDirection * desiredDistance;
+            if (combatPlatform.TryGetPositionTarget(this, desiredPositionX, out float positionTargetX) &&
+                Mathf.Abs(positionTargetX - transform.position.x) > config.PositionTargetTolerance)
             {
-                BeginReposition(targetDirection);
-                return;
-            }
-
-            if (horizontalDistance < config.PreferredMinimumDistance)
-            {
-                BeginReposition(-targetDirection);
+                BeginRepositionTowards(positionTargetX, config.ObservationDuration);
                 return;
             }
 
@@ -337,19 +336,25 @@ namespace JustTest.Game.Enemies
             nextDecisionAt = Time.time + config.DecisionRetryInterval;
         }
 
-        private void BeginReposition(int direction)
+        private void BeginRepositionTowards(float targetX, float observationDuration)
         {
-            float distanceFromAnchor = transform.position.x - anchorX;
-            bool movingPastLeftLimit = direction < 0 && distanceFromAnchor <= -config.MaximumRoamDistance;
-            bool movingPastRightLimit = direction > 0 && distanceFromAnchor >= config.MaximumRoamDistance;
-            if (direction == 0 || movingPastLeftLimit || movingPastRightLimit)
+            float offset = targetX - transform.position.x;
+            int direction = offset > 0f ? 1 : -1;
+            if (Mathf.Abs(offset) <= config.PositionTargetTolerance ||
+                !combatPlatform.CanMoveWithinPositionSlot(
+                    this,
+                    transform.position.x,
+                    direction,
+                    config.PositionTargetTolerance))
             {
                 Observe();
-                nextDecisionAt = Time.time + config.ObservationDuration;
+                nextDecisionAt = Time.time + observationDuration;
                 return;
             }
 
             repositionDirection = direction;
+            repositionTargetX = targetX;
+            repositionObservationDuration = observationDuration;
             repositionEndsAt = Time.time + config.RepositionDuration;
             motor.SetHorizontalDirection(direction);
             State = MeleeEnemyDecisionState.Reposition;
@@ -357,18 +362,21 @@ namespace JustTest.Game.Enemies
 
         private bool TickReposition()
         {
-            float distanceFromAnchor = transform.position.x - anchorX;
-            bool reachedLimit =
-                (repositionDirection < 0 && distanceFromAnchor <= -config.MaximumRoamDistance) ||
-                (repositionDirection > 0 && distanceFromAnchor >= config.MaximumRoamDistance);
-            if (Time.time < repositionEndsAt && !reachedLimit)
+            float remainingOffset = repositionTargetX - transform.position.x;
+            bool reachedTarget = Mathf.Abs(remainingOffset) <= config.PositionTargetTolerance;
+            bool canMove = combatPlatform.CanMoveWithinPositionSlot(
+                this,
+                transform.position.x,
+                repositionDirection,
+                config.PositionTargetTolerance);
+            if (Time.time < repositionEndsAt && !reachedTarget && canMove)
             {
                 motor.SetHorizontalDirection(repositionDirection);
                 return true;
             }
 
             Observe();
-            nextDecisionAt = Time.time + config.ObservationDuration;
+            nextDecisionAt = Time.time + repositionObservationDuration;
             return false;
         }
 
@@ -423,7 +431,16 @@ namespace JustTest.Game.Enemies
             }
 
             int retreatDirection = target.position.x >= transform.position.x ? -1 : 1;
-            BeginReposition(retreatDirection);
+            float desiredRetreatX =
+                transform.position.x + retreatDirection * config.PreferredMinimumDistance;
+            if (combatPlatform.TryGetPositionTarget(this, desiredRetreatX, out float retreatTargetX))
+            {
+                BeginRepositionTowards(retreatTargetX, config.PostAttackObservationDuration);
+            }
+            else
+            {
+                Observe();
+            }
         }
 
         private void OnDied()

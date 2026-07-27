@@ -36,7 +36,7 @@ namespace JustTest.Game.Enemies
         [SerializeField, Min(0f)] private float preferredMinimumDistance = 1.15f;
         [SerializeField, Min(0.1f)] private float preferredMaximumDistance = 2.2f;
         [SerializeField, Min(0.01f)] private float repositionDuration = 0.3f;
-        [SerializeField, Min(0f)] private float maximumRoamDistance = 2.5f;
+        [SerializeField, Min(0.01f)] private float positionTargetTolerance = 0.12f;
         [SerializeField, Min(0.1f)] private float normalAttackRange = 1.55f;
         [SerializeField, Min(0.1f)] private float heavyAttackRange = 1.7f;
 
@@ -71,7 +71,7 @@ namespace JustTest.Game.Enemies
         internal float PreferredMinimumDistance => preferredMinimumDistance;
         internal float PreferredMaximumDistance => preferredMaximumDistance;
         internal float RepositionDuration => repositionDuration;
-        internal float MaximumRoamDistance => maximumRoamDistance;
+        internal float PositionTargetTolerance => positionTargetTolerance;
         internal float NormalAttackRange => normalAttackRange;
         internal float HeavyAttackRange => heavyAttackRange;
         internal Color TelegraphWindupColor => telegraphWindupColor;
@@ -98,7 +98,7 @@ namespace JustTest.Game.Enemies
             IsFinitePositive(attackRequestRetryInterval) &&
             IsFinitePositive(maximumPassiveDuration) &&
             IsFinitePositive(repositionDuration) &&
-            IsFiniteNonNegative(maximumRoamDistance) &&
+            IsFinitePositive(positionTargetTolerance) &&
             preferredMaximumDistance >= preferredMinimumDistance &&
             IsFinitePositive(heavyFlashDuration) &&
             heavyFlashScale >= 1f;
@@ -122,7 +122,7 @@ namespace JustTest.Game.Enemies
                 Mathf.Max(0.1f, preferredMinimumDistance),
                 SanitizeFinite(preferredMaximumDistance));
             repositionDuration = Mathf.Max(0.01f, SanitizeFinite(repositionDuration));
-            maximumRoamDistance = SanitizeNonNegative(maximumRoamDistance);
+            positionTargetTolerance = Mathf.Max(0.01f, SanitizeFinite(positionTargetTolerance));
             normalAttackRange = Mathf.Max(0.1f, SanitizeFinite(normalAttackRange));
             heavyAttackRange = Mathf.Max(0.1f, SanitizeFinite(heavyAttackRange));
             heavyFlashNormalizedTime = Mathf.Clamp01(SanitizeFinite(heavyFlashNormalizedTime));

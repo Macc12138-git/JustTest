@@ -21,6 +21,7 @@ namespace JustTest.Game.Run
         [SerializeField] private MeleeEnemyController2D[] enemies;
 
         private readonly CombatPlatformStateMachine stateMachine = new CombatPlatformStateMachine();
+        private CombatPositionSlotAllocator positionSlotAllocator;
         private Coroutine appearanceRoutine;
         private MeleeEnemyController2D activeAttacker;
         private float nextAttackAllowedAt;
@@ -34,7 +35,7 @@ namespace JustTest.Game.Run
 
         private void Awake()
         {
-            ready = ValidateReferences();
+            ready = ValidateReferences() && InitializePositionSlots();
             if (!ready)
             {
                 Debug.LogError($"{nameof(CombatPlatformController2D)} has an invalid Inspector binding or combat surface.", this);
@@ -135,6 +136,37 @@ namespace JustTest.Game.Run
             nextAttackAllowedAt = Time.time + config.SharedAttackInterval;
         }
 
+        internal bool TryGetPositionTarget(
+            MeleeEnemyController2D requester,
+            float desiredX,
+            out float targetX)
+        {
+            targetX = desiredX;
+            return ready &&
+                   requester != null &&
+                   positionSlotAllocator != null &&
+                   positionSlotAllocator.TryGetTarget(
+                       requester.GetInstanceID(),
+                       desiredX,
+                       out targetX);
+        }
+
+        internal bool CanMoveWithinPositionSlot(
+            MeleeEnemyController2D requester,
+            float currentX,
+            int direction,
+            float tolerance)
+        {
+            return ready &&
+                   requester != null &&
+                   positionSlotAllocator != null &&
+                   positionSlotAllocator.CanMove(
+                       requester.GetInstanceID(),
+                       currentX,
+                       direction,
+                       tolerance);
+        }
+
         private bool ValidateReferences()
         {
             if (config == null ||
@@ -171,6 +203,29 @@ namespace JustTest.Game.Run
             }
 
             return true;
+        }
+
+        private bool InitializePositionSlots()
+        {
+            MeleeEnemyController2D[] sortedEnemies =
+                (MeleeEnemyController2D[])enemies.Clone();
+            Array.Sort(
+                sortedEnemies,
+                (left, right) => left.transform.position.x.CompareTo(right.transform.position.x));
+
+            int[] participantIds = new int[sortedEnemies.Length];
+            for (int index = 0; index < sortedEnemies.Length; index++)
+            {
+                participantIds[index] = sortedEnemies[index].GetInstanceID();
+            }
+
+            Bounds surfaceBounds = combatSurface.bounds;
+            positionSlotAllocator = new CombatPositionSlotAllocator(
+                surfaceBounds.min.x + config.PlatformEdgePadding,
+                surfaceBounds.max.x - config.PlatformEdgePadding,
+                config.SlotInnerPadding,
+                participantIds);
+            return positionSlotAllocator.IsValid;
         }
 
         private void BeginEncounter()

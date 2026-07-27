@@ -18,7 +18,7 @@ MonoBehaviour:
   groundLayers:
     serializedVersion: 2
     m_Bits: 256
-  groundProbeDistance: 0.1
+  groundProbeDistance: 0.08
   maximumGroundAngle: 50
   attackVerticalTolerance: 1.15
   attackCooldown: 0.55
@@ -33,12 +33,12 @@ MonoBehaviour:
   initialHeavyAttackDelay: 1.8
   heavyOpportunityDuration: 0.85
   heavyAttackCooldown: 3.2
-  preferredMinimumDistance: 1.2
-  preferredMaximumDistance: 2.3
+  preferredMinimumDistance: 0.85
+  preferredMaximumDistance: 1.45
   repositionDuration: 0.28
-  maximumRoamDistance: 2.2
-  normalAttackRange: 1.55
-  heavyAttackRange: 1.75
+  positionTargetTolerance: 0.1
+  normalAttackRange: 1.1
+  heavyAttackRange: 1.25
   telegraphWindupColor: {r: 1, g: 0.75, b: 0.15, a: 0.8}
   telegraphActiveColor: {r: 1, g: 0.15, b: 0.1, a: 0.9}
   heavyTelegraphColor: {r: 1, g: 0.42, b: 0.08, a: 0.95}

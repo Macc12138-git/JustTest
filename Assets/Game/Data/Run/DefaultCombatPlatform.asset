@@ -17,3 +17,5 @@ MonoBehaviour:
   oneWayPlatformLayers:
     serializedVersion: 2
     m_Bits: 512
+  platformEdgePadding: 0.35
+  slotInnerPadding: 0.08
