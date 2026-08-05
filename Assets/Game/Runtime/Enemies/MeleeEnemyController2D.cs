@@ -10,19 +10,21 @@ namespace JustTest.Game.Enemies
     public sealed class MeleeEnemyController2D : MonoBehaviour
     {
         [SerializeField] private MeleeEnemyConfig config;
-        [SerializeField] private Transform target;
-        [SerializeField] private HealthComponent targetHealth;
-        [SerializeField] private PlayerAttackRunner targetAttackRunner;
-        [SerializeField] private PlayerRollController targetRollController;
         [SerializeField] private HealthComponent health;
         [SerializeField] private DamageReceiver damageReceiver;
         [SerializeField] private CombatReactionReceiver reactionReceiver;
         [SerializeField] private CombatStatusController statusController;
         [SerializeField] private MeleeEnemyMotor2D motor;
         [SerializeField] private EnemyAttackRunner attackRunner;
-        [SerializeField] private CombatPlatformController2D combatPlatform;
         [SerializeField] private AttackDefinition normalAttack;
         [SerializeField] private AttackDefinition heavyAttack;
+
+        private Transform target;
+        private HealthComponent targetHealth;
+        private PlayerAttackRunner targetAttackRunner;
+        private PlayerRollController targetRollController;
+        private CombatPlatformController2D combatPlatform;
+        private CombatEnemyRuntime2D runtimeOwner;
 
         private float nextDecisionAt;
         private float nextAttackAt;
@@ -40,45 +42,45 @@ namespace JustTest.Game.Enemies
         private bool currentAttackIsHeavy;
         private bool interruptingAttack;
         private bool defeatNotified;
+        private bool internalReferencesValid;
+        private bool sceneContextBound;
         private bool ready;
 
         internal event Action<MeleeEnemyController2D> Defeated;
 
         public MeleeEnemyDecisionState State { get; private set; } = MeleeEnemyDecisionState.Dormant;
-        internal bool IsCurrentAttackHeavy => currentAttackIsHeavy && attackRunner.IsAttacking;
+        internal bool IsCurrentAttackHeavy =>
+            currentAttackIsHeavy && attackRunner != null && attackRunner.IsAttacking;
 
         private void Awake()
         {
-            ready =
+            internalReferencesValid =
                 config != null &&
                 config.IsValid &&
-                target != null &&
-                targetHealth != null &&
-                targetAttackRunner != null &&
-                targetRollController != null &&
                 health != null &&
                 damageReceiver != null &&
                 reactionReceiver != null &&
                 statusController != null &&
                 motor != null &&
                 attackRunner != null &&
-                combatPlatform != null &&
                 normalAttack != null &&
                 heavyAttack != null;
-            if (!ready)
+            RefreshReadiness();
+            if (!internalReferencesValid)
             {
                 Debug.LogError($"{nameof(MeleeEnemyController2D)} is missing an Inspector reference.", this);
                 enabled = false;
                 return;
             }
-
-            lastTargetAttackPhase = targetAttackRunner.Phase;
         }
 
         private void OnEnable()
         {
+            RefreshReadiness();
             if (!ready)
             {
+                Debug.LogError($"{nameof(MeleeEnemyController2D)} has not received its scene context.", this);
+                enabled = false;
                 return;
             }
 
@@ -160,14 +162,38 @@ namespace JustTest.Game.Enemies
                 attackRunner.CancelAttack();
             }
 
-            combatPlatform?.ReleaseAttack(this);
+            combatPlatform?.ReleaseAttack(runtimeOwner);
             motor?.Stop();
         }
 
         internal void PrepareForEncounter()
         {
             encounterActive = false;
+            defeatNotified = false;
+            currentAttackIsHeavy = false;
+            closePresenceDuration = 0f;
+            openingAvailableAt = float.PositiveInfinity;
             State = MeleeEnemyDecisionState.Dormant;
+        }
+
+        internal bool BindSceneContext(
+            in CombatEnemySceneContext context,
+            CombatEnemyRuntime2D owner)
+        {
+            if (!context.IsValid || owner == null)
+            {
+                return false;
+            }
+
+            target = context.Target;
+            targetHealth = context.TargetHealth;
+            targetAttackRunner = context.TargetAttackRunner;
+            targetRollController = context.TargetRollController;
+            combatPlatform = context.CombatPlatform;
+            runtimeOwner = owner;
+            sceneContextBound = true;
+            RefreshReadiness();
+            return true;
         }
 
         internal void ActivateEncounter()
@@ -197,7 +223,7 @@ namespace JustTest.Game.Enemies
             interruptingAttack = true;
             attackRunner?.CancelAttack();
             interruptingAttack = false;
-            combatPlatform?.ReleaseAttack(this);
+            combatPlatform?.ReleaseAttack(runtimeOwner);
             currentAttackIsHeavy = false;
             if (motor != null)
             {
@@ -299,7 +325,7 @@ namespace JustTest.Game.Enemies
                 config.PreferredMinimumDistance,
                 config.PreferredMaximumDistance);
             float desiredPositionX = target.position.x - targetDirection * desiredDistance;
-            if (combatPlatform.TryGetPositionTarget(this, desiredPositionX, out float positionTargetX) &&
+            if (combatPlatform.TryGetPositionTarget(runtimeOwner, desiredPositionX, out float positionTargetX) &&
                 Mathf.Abs(positionTargetX - transform.position.x) > config.PositionTargetTolerance)
             {
                 BeginRepositionTowards(positionTargetX, config.ObservationDuration);
@@ -317,7 +343,7 @@ namespace JustTest.Game.Enemies
         {
             motor.Stop();
             motor.Face(direction);
-            if (!combatPlatform.TryAcquireAttack(this))
+            if (!combatPlatform.TryAcquireAttack(runtimeOwner))
             {
                 State = MeleeEnemyDecisionState.WaitingForTurn;
                 nextDecisionAt = Time.time + config.AttackRequestRetryInterval;
@@ -332,7 +358,7 @@ namespace JustTest.Game.Enemies
             }
 
             currentAttackIsHeavy = false;
-            combatPlatform.ReleaseAttack(this);
+            combatPlatform.ReleaseAttack(runtimeOwner);
             nextDecisionAt = Time.time + config.DecisionRetryInterval;
         }
 
@@ -342,7 +368,7 @@ namespace JustTest.Game.Enemies
             int direction = offset > 0f ? 1 : -1;
             if (Mathf.Abs(offset) <= config.PositionTargetTolerance ||
                 !combatPlatform.CanMoveWithinPositionSlot(
-                    this,
+                    runtimeOwner,
                     transform.position.x,
                     direction,
                     config.PositionTargetTolerance))
@@ -365,7 +391,7 @@ namespace JustTest.Game.Enemies
             float remainingOffset = repositionTargetX - transform.position.x;
             bool reachedTarget = Mathf.Abs(remainingOffset) <= config.PositionTargetTolerance;
             bool canMove = combatPlatform.CanMoveWithinPositionSlot(
-                this,
+                runtimeOwner,
                 transform.position.x,
                 repositionDirection,
                 config.PositionTargetTolerance);
@@ -404,7 +430,7 @@ namespace JustTest.Game.Enemies
                 interruptingAttack = false;
             }
 
-            combatPlatform.ReleaseAttack(this);
+            combatPlatform.ReleaseAttack(runtimeOwner);
             currentAttackIsHeavy = false;
             motor.Stop();
             motor.SetControlEnabled(allowBraking);
@@ -413,7 +439,7 @@ namespace JustTest.Game.Enemies
 
         private void OnAttackEnded(bool completed)
         {
-            combatPlatform.ReleaseAttack(this);
+            combatPlatform.ReleaseAttack(runtimeOwner);
             bool wasHeavy = currentAttackIsHeavy;
             currentAttackIsHeavy = false;
             if (!encounterActive || !completed || interruptingAttack)
@@ -433,7 +459,7 @@ namespace JustTest.Game.Enemies
             int retreatDirection = target.position.x >= transform.position.x ? -1 : 1;
             float desiredRetreatX =
                 transform.position.x + retreatDirection * config.PreferredMinimumDistance;
-            if (combatPlatform.TryGetPositionTarget(this, desiredRetreatX, out float retreatTargetX))
+            if (combatPlatform.TryGetPositionTarget(runtimeOwner, desiredRetreatX, out float retreatTargetX))
             {
                 BeginRepositionTowards(retreatTargetX, config.PostAttackObservationDuration);
             }
@@ -467,7 +493,7 @@ namespace JustTest.Game.Enemies
             interruptingAttack = true;
             attackRunner.CancelAttack();
             interruptingAttack = false;
-            combatPlatform.ReleaseAttack(this);
+            combatPlatform.ReleaseAttack(runtimeOwner);
             motor.ResetMotion();
             currentAttackIsHeavy = false;
             defeatNotified = false;
@@ -475,6 +501,19 @@ namespace JustTest.Game.Enemies
             State = encounterActive
                 ? MeleeEnemyDecisionState.Observe
                 : MeleeEnemyDecisionState.Dormant;
+        }
+
+        private void RefreshReadiness()
+        {
+            ready =
+                internalReferencesValid &&
+                sceneContextBound &&
+                target != null &&
+                targetHealth != null &&
+                targetAttackRunner != null &&
+                targetRollController != null &&
+                combatPlatform != null &&
+                runtimeOwner != null;
         }
     }
 }

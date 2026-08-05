@@ -16,12 +16,27 @@ namespace JustTest.Game.Combat
 
             [NonSerialized] private CombatFeedbackCoordinator owner;
 
+            internal TargetBinding()
+            {
+            }
+
+            internal TargetBinding(
+                DamageReceiver receiver,
+                CombatHitFlash2D hitFlash,
+                Transform impactAnchor)
+            {
+                this.receiver = receiver;
+                this.hitFlash = hitFlash;
+                this.impactAnchor = impactAnchor;
+            }
+
             internal bool IsValid =>
                 receiver != null &&
                 hitFlash != null &&
                 impactAnchor != null;
 
             internal CombatHitFlash2D HitFlash => hitFlash;
+            internal int ReceiverId => receiver != null ? receiver.GetInstanceID() : 0;
 
             internal void Initialize(CombatFeedbackCoordinator coordinator)
             {
@@ -73,6 +88,16 @@ namespace JustTest.Game.Combat
             private int lastRecoilSourceId;
             private int lastRecoilAttackInstanceId;
 
+            internal SourceBinding()
+            {
+            }
+
+            internal SourceBinding(MonoBehaviour[] sources, CombatAttackRecoil2D recoil)
+            {
+                this.sources = sources;
+                this.recoil = recoil;
+            }
+
             internal bool IsValid
             {
                 get
@@ -94,7 +119,7 @@ namespace JustTest.Game.Combat
                 }
             }
 
-            internal bool Register(Dictionary<int, SourceBinding> lookup)
+            internal bool CanRegister(Dictionary<int, SourceBinding> lookup)
             {
                 for (int index = 0; index < sources.Length; index++)
                 {
@@ -103,11 +128,31 @@ namespace JustTest.Game.Combat
                     {
                         return false;
                     }
-
-                    lookup.Add(sourceId, this);
                 }
 
                 return true;
+            }
+
+            internal void Register(Dictionary<int, SourceBinding> lookup)
+            {
+                for (int index = 0; index < sources.Length; index++)
+                {
+                    lookup.Add(sources[index].GetInstanceID(), this);
+                }
+            }
+
+            internal void Unregister(Dictionary<int, SourceBinding> lookup)
+            {
+                for (int index = 0; index < sources.Length; index++)
+                {
+                    int sourceId = sources[index] != null ? sources[index].GetInstanceID() : 0;
+                    if (sourceId != 0 &&
+                        lookup.TryGetValue(sourceId, out SourceBinding registered) &&
+                        ReferenceEquals(registered, this))
+                    {
+                        lookup.Remove(sourceId);
+                    }
+                }
             }
 
             internal void RequestRecoil(
@@ -148,6 +193,10 @@ namespace JustTest.Game.Combat
         [SerializeField] private SourceBinding[] sources;
 
         private Dictionary<int, SourceBinding> sourceLookup;
+        private Dictionary<int, TargetBinding> runtimeTargets;
+        private Dictionary<int, SourceBinding> runtimeSources;
+        private HashSet<int> registeredTargetIds;
+        private int nextRuntimeRegistrationId = 1;
         private bool ready;
 
         private void Awake()
@@ -164,6 +213,9 @@ namespace JustTest.Game.Combat
             if (ready)
             {
                 sourceLookup = new Dictionary<int, SourceBinding>();
+                runtimeTargets = new Dictionary<int, TargetBinding>();
+                runtimeSources = new Dictionary<int, SourceBinding>();
+                registeredTargetIds = new HashSet<int>();
                 ready = InitializeTargets() && InitializeSources();
             }
 
@@ -187,6 +239,11 @@ namespace JustTest.Game.Combat
             {
                 targets[index].Subscribe();
             }
+
+            foreach (TargetBinding target in runtimeTargets.Values)
+            {
+                target.Subscribe();
+            }
         }
 
         private void OnDisable()
@@ -197,6 +254,15 @@ namespace JustTest.Game.Combat
                 {
                     targets[index]?.Unsubscribe();
                     targets[index]?.HitFlash?.ResetFlash();
+                }
+            }
+
+            if (runtimeTargets != null)
+            {
+                foreach (TargetBinding target in runtimeTargets.Values)
+                {
+                    target.Unsubscribe();
+                    target.HitFlash.ResetFlash();
                 }
             }
 
@@ -216,6 +282,11 @@ namespace JustTest.Game.Combat
                     return false;
                 }
 
+                if (!registeredTargetIds.Add(target.ReceiverId))
+                {
+                    return false;
+                }
+
                 target.Initialize(this);
             }
 
@@ -227,12 +298,80 @@ namespace JustTest.Game.Combat
             for (int index = 0; index < sources.Length; index++)
             {
                 SourceBinding source = sources[index];
-                if (source == null || !source.IsValid || !source.Register(sourceLookup))
+                if (source == null || !source.IsValid || !source.CanRegister(sourceLookup))
                 {
                     return false;
                 }
+
+                source.Register(sourceLookup);
             }
 
+            return true;
+        }
+
+        internal bool TryRegisterRuntime(
+            DamageReceiver receiver,
+            CombatHitFlash2D hitFlash,
+            Transform impactAnchor,
+            MonoBehaviour[] feedbackSources,
+            CombatAttackRecoil2D recoil,
+            out CombatFeedbackRegistration registration)
+        {
+            registration = default;
+            TargetBinding target = new TargetBinding(receiver, hitFlash, impactAnchor);
+            SourceBinding source = new SourceBinding(feedbackSources, recoil);
+            if (!ready ||
+                !target.IsValid ||
+                !source.IsValid ||
+                registeredTargetIds.Contains(target.ReceiverId) ||
+                !source.CanRegister(sourceLookup))
+            {
+                return false;
+            }
+
+            int registrationId = nextRuntimeRegistrationId;
+            nextRuntimeRegistrationId = nextRuntimeRegistrationId == int.MaxValue
+                ? 1
+                : nextRuntimeRegistrationId + 1;
+            while (runtimeTargets.ContainsKey(registrationId))
+            {
+                registrationId = nextRuntimeRegistrationId;
+                nextRuntimeRegistrationId = nextRuntimeRegistrationId == int.MaxValue
+                    ? 1
+                    : nextRuntimeRegistrationId + 1;
+            }
+
+            target.Initialize(this);
+            source.Register(sourceLookup);
+            runtimeTargets.Add(registrationId, target);
+            runtimeSources.Add(registrationId, source);
+            registeredTargetIds.Add(target.ReceiverId);
+            if (isActiveAndEnabled)
+            {
+                target.Subscribe();
+            }
+
+            registration = new CombatFeedbackRegistration(registrationId);
+            return true;
+        }
+
+        internal bool UnregisterRuntime(CombatFeedbackRegistration registration)
+        {
+            if (!registration.IsValid ||
+                runtimeTargets == null ||
+                !runtimeTargets.TryGetValue(registration.Id, out TargetBinding target) ||
+                !runtimeSources.TryGetValue(registration.Id, out SourceBinding source))
+            {
+                return false;
+            }
+
+            target.Unsubscribe();
+            target.HitFlash.ResetFlash();
+            source.Unregister(sourceLookup);
+            source.Reset();
+            registeredTargetIds.Remove(target.ReceiverId);
+            runtimeTargets.Remove(registration.Id);
+            runtimeSources.Remove(registration.Id);
             return true;
         }
 
@@ -297,6 +436,16 @@ namespace JustTest.Game.Combat
             for (int index = 0; index < sources.Length; index++)
             {
                 sources[index]?.Reset();
+            }
+
+            if (runtimeSources == null)
+            {
+                return;
+            }
+
+            foreach (SourceBinding source in runtimeSources.Values)
+            {
+                source.Reset();
             }
         }
     }

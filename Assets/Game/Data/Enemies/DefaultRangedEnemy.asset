@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6356b25b7816340b3af6f52328d472f7, type: 3}
+  m_Name: DefaultRangedEnemy
+  m_EditorClassIdentifier: 
+  movementSpeed: 4
+  groundAcceleration: 30
+  groundDeceleration: 45
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  groundProbeDistance: 0.1
+  maximumGroundAngle: 50
+  attackVerticalTolerance: 1.15
+  preferredMinimumDistance: 3.2
+  preferredMaximumDistance: 5
+  attackCooldown: 1.8
+  initialObservationDuration: 0.65
+  observationDuration: 0.25
+  decisionRetryInterval: 0.12
+  attackRequestRetryInterval: 0.15
+  postAttackObservationDuration: 0.45
+  blockedRetreatGraceDuration: 0.4
+  repositionDuration: 0.35
+  positionTargetTolerance: 0.12
+  telegraphWindupColor: {r: 0.2, g: 0.8, b: 1, a: 0.85}
+  telegraphActiveColor: {r: 1, g: 0.35, b: 0.12, a: 0.95}
+  telegraphFlashColor: {r: 1, g: 1, b: 1, a: 1}
+  telegraphGlowColor: {r: 0.1, g: 0.65, b: 1, a: 0.38}
+  telegraphLaserLength: 6.5
+  telegraphGlowWidth: 0.18
+  telegraphCoreWidth: 0.045
+  telegraphPulseFrequency: 12
+  telegraphPulseAmplitude: 0.16
+  telegraphMinimumCoreLength: 0.18
+  telegraphFlashNormalizedTime: 0.72
+  telegraphFlashDuration: 0.1
+  telegraphFlashScale: 1.18
