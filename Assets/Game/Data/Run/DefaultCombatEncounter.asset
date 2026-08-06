@@ -28,6 +28,9 @@ MonoBehaviour:
       count: 1
     - archetype: {fileID: 11400000, guid: de5867296576c47d8bfbb2e539e4338d, type: 2}
       count: 2
+  - groups:
+    - archetype: {fileID: 11400000, guid: 7fcc902c021eb4c0b934e0a501b408b9, type: 2}
+      count: 1
   maximumConcurrentEnemies: 3
   spawnInterval: 0.35
   interWaveDelay: 1.1

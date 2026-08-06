@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8e0b9226af08497e9f8b5654443ea3d, type: 3}
+  m_Name: DefaultEliteEnemy
+  m_EditorClassIdentifier: 
+  movementSpeed: 4.2
+  groundAcceleration: 32
+  groundDeceleration: 48
+  dashSpeed: 9.5
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  groundProbeDistance: 0.1
+  maximumGroundAngle: 50
+  attackVerticalTolerance: 1.15
+  preferredMinimumDistance: 1.4
+  preferredMaximumDistance: 2.4
+  quickAttackRange: 1.75
+  heavyAttackRange: 1.95
+  dashMinimumDistance: 3.2
+  dashMaximumDistance: 6
+  repositionDuration: 0.35
+  positionTargetTolerance: 0.12
+  initialObservationDuration: 0.75
+  observationDuration: 0.35
+  decisionRetryInterval: 0.12
+  attackRequestRetryInterval: 0.15
+  opportunityReactionDelay: 0.16
+  rollExitObservationDuration: 0.2
+  maximumPassiveDuration: 1.6
+  postAttackObservationDuration: 0.3
+  quickAttackCooldown: 0.9
+  heavyAttackCooldown: 3.2
+  dashAttackCooldown: 4
+  heavyOpportunityDuration: 0.7
+  quickTelegraphColor: {r: 1, g: 0.75, b: 0.15, a: 0.85}
+  heavyTelegraphColor: {r: 1, g: 0.35, b: 0.08, a: 0.95}
+  dashTelegraphColor: {r: 0.15, g: 0.8, b: 1, a: 0.9}
+  activeTelegraphColor: {r: 1, g: 0.12, b: 0.08, a: 0.95}
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  heavyFlashNormalizedTime: 0.65
+  dashFlashNormalizedTime: 0.72
+  flashDuration: 0.1
+  flashScale: 1.22
+  dashTelegraphLengthScale: 2.2

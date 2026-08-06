@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e9749f91c3c148e7a5f73dd3287c369, type: 3}
+  m_Name: EliteDashCleaveMotion
+  m_EditorClassIdentifier: 
+  mainWeaponColor: {r: 0.1, g: 0.85, b: 1, a: 1}
+  mainWeaponSize: {x: 1.12, y: 0.18}
+  mainWeaponVisualOffset: {x: 0.35, y: 0}
+  showOffhandWeapon: 0
+  offhandWeaponColor: {r: 1, g: 1, b: 1, a: 1}
+  offhandWeaponSize: {x: 1, y: 1}
+  offhandWeaponVisualOffset: {x: 0, y: 0}
+  windupPose:
+    bodyOffset: {x: -0.06, y: 0.02}
+    bodyRotation: 6
+    bodyScale: {x: 1, y: 1}
+    mainWeaponOffset: {x: -0.04, y: 0.04}
+    mainWeaponRotation: 55
+    mainWeaponScale: {x: 1, y: 1}
+    offhandWeaponOffset: {x: 0, y: 0}
+    offhandWeaponRotation: 0
+    offhandWeaponScale: {x: 1, y: 1}
+  activePose:
+    bodyOffset: {x: 0.48, y: -0.02}
+    bodyRotation: -8
+    bodyScale: {x: 0.96, y: 1.04}
+    mainWeaponOffset: {x: 0.08, y: -0.02}
+    mainWeaponRotation: -60
+    mainWeaponScale: {x: 1.08, y: 1}
+    offhandWeaponOffset: {x: 0, y: 0}
+    offhandWeaponRotation: 0
+    offhandWeaponScale: {x: 1, y: 1}
+  recoveryPose:
+    bodyOffset: {x: 0.04, y: -0.02}
+    bodyRotation: -2
+    bodyScale: {x: 1.03, y: 0.97}
+    mainWeaponOffset: {x: 0, y: 0}
+    mainWeaponRotation: -20
+    mainWeaponScale: {x: 1, y: 1}
+    offhandWeaponOffset: {x: 0, y: 0}
+    offhandWeaponRotation: 0
+    offhandWeaponScale: {x: 1, y: 1}
+  phaseCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  recoveryPosePeak: 0.35

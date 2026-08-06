@@ -2658,6 +2658,7 @@ MonoBehaviour:
   archetypes:
   - {fileID: 11400000, guid: de5867296576c47d8bfbb2e539e4338d, type: 2}
   - {fileID: 11400000, guid: bcbd2f0f5efe44d83be3db8597f9084e, type: 2}
+  - {fileID: 11400000, guid: 7fcc902c021eb4c0b934e0a501b408b9, type: 2}
   poolRoot: {fileID: 266047022}
   collectionCheck: 1
 --- !u!1 &1566052299
