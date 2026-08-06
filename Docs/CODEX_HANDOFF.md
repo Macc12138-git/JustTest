@@ -3,8 +3,6 @@
 更新时间：2026-08-06  
 项目路径：`/Users/user/Desktop/JustTest/JustTest`  
 Unity版本：`2022.3.34f1`  
-当前分支：`main`  
-远程分支：`origin/main`
 
 ## 1. 交接目标
 
@@ -26,11 +24,9 @@ Unity版本：`2022.3.34f1`
 ## 2. 新 Codex 接手时先做什么
 
 1. 阅读本文件和 `Docs/开发阶段计划.md`。
-2. 执行 `git status --short --branch`，确认下面列出的精英敌人修改仍然存在。
-3. 如果仓库根目录存在 `.codegraph/`，理解和定位代码时必须先使用 `codegraph explore`。
-4. 不要丢弃、覆盖或回退当前未提交的精英敌人代码与资源。
-5. 如果需要调用 Unity Editor，必须先读取 `Application.dataPath`，确认连接的是本项目而不是同时打开的 CastleClasher2。
-6. 不要进入 Play Mode。运行时玩法验证由用户执行；Codex只做编译、EditMode测试和静态资源校验。
+2. 如果仓库根目录存在 `.codegraph/`，理解和定位代码时必须先使用 `codegraph explore`。
+3. 如果需要调用 Unity Editor，必须先读取 `Application.dataPath`，确认连接的是本项目而不是同时打开的 CastleClasher2。
+4. 不要进入 Play Mode。运行时玩法验证由用户执行；Codex只做编译、EditMode测试和静态资源校验。
 
 正确的 Unity 项目标识：
 
@@ -45,52 +41,9 @@ Application.productName=JustTest
 Assets/Game/Scenes/CombatSandbox.unity
 ```
 
-## 3. 当前 Git 状态
+## 3. 已完成任务
 
-当前提交：
-
-```text
-fbbbf44 (HEAD -> main, origin/main) xiugai
-```
-
-当前工作树不是干净状态。以下内容是已经实现并验证、但尚未提交的精英敌人批次，必须保留。
-
-已修改：
-
-- `Assets/Game/Data/Run/DefaultCombatEncounter.asset`
-- `Assets/Game/Scenes/CombatSandbox.unity`
-
-新增精英运行时代码：
-
-- `Assets/Game/Runtime/Enemies/EliteEnemyAttackType.cs`
-- `Assets/Game/Runtime/Enemies/EliteEnemyDecisionState.cs`
-- `Assets/Game/Runtime/Enemies/EliteEnemyDecisionResolver.cs`
-- `Assets/Game/Runtime/Enemies/EliteEnemyConfig.cs`
-- `Assets/Game/Runtime/Enemies/EliteEnemyGroundProbe2D.cs`
-- `Assets/Game/Runtime/Enemies/EliteEnemyMotor2D.cs`
-- `Assets/Game/Runtime/Enemies/EliteEnemyController2D.cs`
-- `Assets/Game/Runtime/Enemies/EliteEnemyAttackTelegraph2D.cs`
-- `Assets/Game/Runtime/Enemies/EliteEnemyRuntimeBindings.cs`
-- `Assets/Game/Runtime/Presentation/EliteEnemyWhiteboxMotionPresenter2D.cs`
-- `Assets/Game/Tests/EditMode/EliteEnemyDecisionResolverTests.cs`
-
-新增精英资源：
-
-- `Assets/Game/Prefabs/Enemies/PrototypeEliteEnemy.prefab`
-- `Assets/Game/Data/Enemies/DefaultEliteEnemy.asset`
-- `Assets/Game/Data/Enemies/EliteEnemyDefinition.asset`
-- `Assets/Game/Data/Enemies/EliteEnemyArchetype.asset`
-- `Assets/Game/Data/Combat/SandboxEliteQuickSlash.asset`
-- `Assets/Game/Data/Combat/SandboxEliteHeavySmash.asset`
-- `Assets/Game/Data/Combat/SandboxEliteDashCleave.asset`
-- `Assets/Game/Data/Presentation/EliteQuickSlashMotion.asset`
-- `Assets/Game/Data/Presentation/EliteHeavySmashMotion.asset`
-- `Assets/Game/Data/Presentation/EliteDashCleaveMotion.asset`
-- 上述文件对应的全部 `.meta`
-
-## 4. 已完成任务
-
-### 4.1 工程基线
+### 3.1 工程基线
 
 - Unity 2022.3 LTS工程已建立。
 - 已建立 `JustTest.Game.Runtime` 和 `JustTest.Game.Tests.EditMode` 程序集。
@@ -98,7 +51,7 @@ fbbbf44 (HEAD -> main, origin/main) xiugai
 - 第一版只支持键盘和旧版 `UnityEngine.Input`。
 - 参数主要由 ScriptableObject配置，不将调试参数硬编码在行为代码中。
 
-### 4.2 玩家移动
+### 3.2 玩家移动
 
 - 地面移动、快速转向和空中控制。
 - 跳跃、可变跳高、土狼时间和跳跃缓存。
@@ -113,7 +66,7 @@ fbbbf44 (HEAD -> main, origin/main) xiugai
 - `Assets/Game/Runtime/Input`
 - `Assets/Game/Data/Player`
 
-### 4.3 通用战斗内核
+### 3.3 通用战斗内核
 
 - Hitbox、Hurtbox和单次攻击命中去重。
 - 攻击 Windup、Active、Recovery三阶段时间线。
@@ -128,7 +81,7 @@ fbbbf44 (HEAD -> main, origin/main) xiugai
 - `Assets/Game/Runtime/Combat/Feedback`
 - `Assets/Game/Data/Combat`
 
-### 4.4 三武器与QTE
+### 3.4 三武器与QTE
 
 - 最多携带三把武器，不限制重复武器类型。
 - 未携带武器时默认提供初级单手剑。
@@ -156,7 +109,7 @@ fbbbf44 (HEAD -> main, origin/main) xiugai
 - `Assets/Game/Runtime/Weapons`
 - `Assets/Game/Data/Weapons`
 
-### 4.5 战斗内HUD和结算
+### 3.5 战斗内HUD和结算
 
 - 玩家生命、能量和技能状态显示。
 - 三个武器槽、当前武器和QTE候选显示。
@@ -168,7 +121,7 @@ fbbbf44 (HEAD -> main, origin/main) xiugai
 - `Assets/Game/Runtime/UI`
 - `Assets/Game/Runtime/Run/CombatRunController.cs`
 
-### 4.6 敌人与战斗平台
+### 3.6 敌人与战斗平台
 
 - 普通近战敌人。
 - 远程敌人、投射物对象池和激光式攻击提示线。
@@ -186,7 +139,7 @@ fbbbf44 (HEAD -> main, origin/main) xiugai
 - `Assets/Game/Runtime/Run/CombatPositionSlotAllocator.cs`
 - `Assets/Game/Data/Run/DefaultCombatEncounter.asset`
 
-### 4.7 精英敌人
+### 3.7 精英敌人
 
 精英敌人是当前最新完成批次，作为 `CombatSandbox` 第4波单体敌人出现。
 
@@ -218,7 +171,7 @@ fbbbf44 (HEAD -> main, origin/main) xiugai
 
 用户已经完成实际玩法测试，并确认功能正常。
 
-## 5. 当前表现层结构
+## 4. 当前表现层结构
 
 当前角色和敌人仍以白盒Sprite和程序化姿势为主。
 
@@ -241,7 +194,7 @@ fbbbf44 (HEAD -> main, origin/main) xiugai
 
 这意味着后续可以替换模型表现层，而不需要重做移动、碰撞、攻击判定和QTE。
 
-## 6. 当前进行中的设计事项
+## 5. 当前进行中的设计事项
 
 用户希望优先优化角色动作和实体表现，战斗节奏后续再做。
 
@@ -261,7 +214,7 @@ fbbbf44 (HEAD -> main, origin/main) xiugai
 
 安装包和改动工程前，先与用户确认最终参考图和美术方向。
 
-## 7. 已确认的美术风格概念
+## 6. 已确认的美术风格概念
 
 方向：高速战斗美少女 + 哥特魔导武装。
 
@@ -302,7 +255,7 @@ fbbbf44 (HEAD -> main, origin/main) xiugai
 | 双匕首 | 前倾、高频 | 青蓝短促残影和交叉斩 |
 | 重锤 | 低重心、蓄力 | 赤红闪光、地面冲击和碎屑 |
 
-## 8. 推荐的PSD与骨骼方案
+## 7. 推荐的PSD与骨骼方案
 
 美术源文件建议保存在Unity `Assets`目录外，避免Unity重复导入源PSD。Unity运行资源使用分层PSB或透明PNG。
 
@@ -356,7 +309,7 @@ Cape_Front
 - 头发2至3段骨骼，披肩2段骨骼。
 - 首版不使用实时布料物理。
 
-## 9. 推荐的新表现层边界
+## 8. 推荐的新表现层边界
 
 建议保持现有物理和玩法根节点不变：
 
@@ -390,7 +343,7 @@ PlayerRoot
 
 角色外观建议通过 Sprite Library切换。武器使用独立Prefab和手部插槽，不放在身体皮肤中。
 
-## 10. 动画驱动原则
+## 9. 动画驱动原则
 
 绝对不能通过 Animation Event直接决定伤害、状态或QTE是否生效。
 
@@ -432,7 +385,7 @@ Presenter根据 AttackRunner的 `Phase`和 `PhaseProgress`采样动画。替换�
 - Skill
 - QTE
 
-## 11. 未完成任务与优先级
+## 10. 未完成任务与优先级
 
 ### P0：美少女角色表现竖切
 
@@ -488,7 +441,7 @@ P0验证后执行：
 - 局外成长、商店和存档。
 - 正式音频、剧情和内容生产管线。
 
-## 12. 工程实现约束
+## 11. 工程实现约束
 
 以下约束来自用户，必须继续遵守：
 
@@ -507,7 +460,7 @@ P0验证后执行：
 - 不要修改无关文件或回退用户已有修改。
 - 不要进入Play Mode；把玩法验证清单交给用户。
 
-## 13. 最近验证结果
+## 12. 最近验证结果
 
 精英敌人批次完成后的验证：
 
@@ -526,9 +479,8 @@ P0验证后执行：
 - 未进入Play Mode。
 - 用户随后完成实际玩法验证，确认测试正常。
 
-## 14. 已知风险与注意事项
+## 13. 已知风险与注意事项
 
-- 当前精英敌人批次尚未提交，下一位 Codex不能把它当作临时文件删除。
 - 当前开发计划文档的后续顺序已经部分过时，本文件的当前优先级更高。
 - 项目尚未安装Unity 2D Animation与PSD Importer，不能假定对应类型已经可用。
 - 项目没有美术人员，第一批美术资产应选择易于分层和骨骼变形的造型，避免复杂披风、透明纱、密集花纹和大量挂件。
@@ -537,7 +489,7 @@ P0验证后执行：
 - ArtStation、Pixiv和Pinterest只用于参考，不能直接把作者作品放入游戏。
 - 购买第三方素材时必须检查商用、修改、再分发和AI相关授权。
 
-## 15. 下一位 Codex 推荐执行顺序
+## 14. 下一位 Codex 推荐执行顺序
 
 在用户提供或确认参考图后：
 
@@ -550,4 +502,3 @@ P0验证后执行：
 7. 获得用户明确许可后才修改Packages、代码、Prefab和场景。
 
 不要直接跳到制作全部武器和敌人。先完成“玩家模型 + 基础移动 + 翻滚 + 单手剑”的纵向切片。
-
