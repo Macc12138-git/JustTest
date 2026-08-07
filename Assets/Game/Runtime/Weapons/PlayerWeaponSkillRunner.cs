@@ -34,8 +34,11 @@ namespace JustTest.Game.Weapons
         internal event Action<HitResult> HitResolved;
 
         internal AttackPhase Phase => timeline?.Phase ?? AttackPhase.Idle;
+        internal float PhaseProgress => timeline?.PhaseProgress ?? 0f;
         internal bool IsExecuting => executing;
         internal WeaponSkillDefinition ActiveDefinition => activeDefinition;
+        internal AttackDefinition CurrentAttackDefinition => activeDefinition?.Attack;
+        internal int CurrentAttackDirection => attackDirection;
         internal WeaponSkillCancelReason LastCancelReason { get; private set; }
 
         private void Awake()

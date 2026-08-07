@@ -11,6 +11,7 @@ namespace JustTest.Game.Run
 
         [Header("Surface Validation")]
         [SerializeField] private LayerMask oneWayPlatformLayers;
+        [SerializeField] private LayerMask targetObstructionLayers;
 
         [Header("Enemy Positioning")]
         [SerializeField, Min(0f)] private float platformEdgePadding = 0.35f;
@@ -20,13 +21,15 @@ namespace JustTest.Game.Run
         internal float SharedAttackInterval => sharedAttackInterval;
         internal float PlatformEdgePadding => platformEdgePadding;
         internal float SlotInnerPadding => slotInnerPadding;
+        internal LayerMask TargetObstructionLayers => targetObstructionLayers;
 
         internal bool IsValid =>
             IsFiniteNonNegative(appearanceDelay) &&
             IsFiniteNonNegative(sharedAttackInterval) &&
             IsFiniteNonNegative(platformEdgePadding) &&
             IsFiniteNonNegative(slotInnerPadding) &&
-            oneWayPlatformLayers.value != 0;
+            oneWayPlatformLayers.value != 0 &&
+            targetObstructionLayers.value != 0;
 
         internal bool IsValidCombatSurface(Collider2D surface)
         {

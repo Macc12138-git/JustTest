@@ -1,6 +1,7 @@
 using System;
 using JustTest.Game.Input;
 using JustTest.Game.Player;
+using JustTest.Game.Run;
 using JustTest.Game.Weapons;
 using UnityEngine;
 
@@ -16,7 +17,12 @@ namespace JustTest.Game.Combat
         [SerializeField] private Transform attackAnchor;
         [SerializeField] private PlayerWeaponLoadout weaponLoadout;
 
+        [Header("Target Assist")]
+        [SerializeField] private CombatPlatformController2D combatPlatform;
+
         private readonly PlayerAttackComboState comboState = new PlayerAttackComboState();
+        private readonly PlayerAttackApproachState approachState =
+            new PlayerAttackApproachState();
 
         private AttackInstanceFactory attackFactory;
         private AttackTimeline timeline;
@@ -60,6 +66,10 @@ namespace JustTest.Game.Combat
 
         public HitResult LastHitResult => lastHitResult;
 
+        public bool HasAttackTarget => approachState.HasTarget;
+
+        public Transform CurrentAttackTarget => approachState.TargetTransform;
+
         private void Awake()
         {
             ready =
@@ -98,9 +108,11 @@ namespace JustTest.Game.Combat
                 return;
             }
 
+            approachState.TickRetention(combatPlatform, Time.time);
+
             if (movementController.IsRolling && IsAttacking)
             {
-                CancelAttack();
+                CancelAttackForRoll();
             }
 
             timeline?.Tick(Time.deltaTime);
@@ -131,12 +143,26 @@ namespace JustTest.Game.Combat
 
             if (movementController.IsRolling)
             {
-                CancelAttack();
+                CancelAttackForRoll();
                 return;
             }
 
-            movementController.ApplyActionHorizontalVelocity(
-                activeStep.ForwardSpeed * attackDirection);
+            float horizontalVelocity = activeStep.ForwardSpeed * attackDirection;
+            if (activeStep.TargetAssistEnabled &&
+                approachState.TryResolveWarpVelocity(
+                    combatPlatform,
+                    movementController.BodyCollider,
+                    hitboxCollider,
+                    activeStep,
+                    Phase,
+                    PhaseProgress,
+                    Time.fixedDeltaTime,
+                    out float warpedVelocity))
+            {
+                horizontalVelocity = warpedVelocity;
+            }
+
+            movementController.ApplyActionHorizontalVelocity(horizontalVelocity);
         }
 
         private void OnDisable()
@@ -162,6 +188,16 @@ namespace JustTest.Game.Combat
 
         public void CancelAttack()
         {
+            CancelAttackInternal(false);
+        }
+
+        private void CancelAttackForRoll()
+        {
+            CancelAttackInternal(true);
+        }
+
+        private void CancelAttackInternal(bool preserveTarget)
+        {
             comboState.Reset();
             continueAfterTimelineTick = false;
             resettingCombo = true;
@@ -170,6 +206,10 @@ namespace JustTest.Game.Combat
                 ClearActiveAttack();
             }
             resettingCombo = false;
+            if (!preserveTarget)
+            {
+                approachState.ClearTarget();
+            }
         }
 
         private void TryStartBufferedAttack(float timestamp)
@@ -266,7 +306,19 @@ namespace JustTest.Game.Combat
             activeStep = step;
             currentComboStepIndex = stepIndex;
             activeDefinition = step.Attack;
-            attackDirection = movementController.FacingDirection == -1 ? -1 : 1;
+            int facingDirection = movementController.FacingDirection == -1 ? -1 : 1;
+            int inputDirection = Mathf.Abs(inputReader.Horizontal) > 0.1f
+                ? (inputReader.Horizontal < 0f ? -1 : 1)
+                : 0;
+            approachState.PrepareStep(
+                combatPlatform,
+                movementController.BodyCollider,
+                step,
+                facingDirection,
+                inputDirection,
+                Time.time,
+                out attackDirection);
+            movementController.SetFacingDirection(attackDirection);
 
             Vector3 localPosition = attackAnchorBaseLocalPosition;
             localPosition.x = Mathf.Abs(step.HitboxOffset.x) * attackDirection;
@@ -335,6 +387,11 @@ namespace JustTest.Game.Combat
         {
             lastHitResult = result;
             hasLastHitResult = true;
+            if (result.WasApplied)
+            {
+                approachState.HoldPosition();
+            }
+
             HitResolved?.Invoke(result);
         }
 
@@ -345,6 +402,9 @@ namespace JustTest.Game.Combat
 
         private void ClearActiveAttack()
         {
+            approachState.EndStep(
+                Time.time,
+                activeStep?.TargetRetentionDuration ?? 0f);
             hitbox?.EndAttack();
             if (timeline != null)
             {

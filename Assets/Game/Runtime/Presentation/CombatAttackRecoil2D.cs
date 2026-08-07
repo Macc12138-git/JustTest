@@ -5,6 +5,7 @@ namespace JustTest.Game.Presentation
     public sealed class CombatAttackRecoil2D : MonoBehaviour
     {
         [SerializeField] private CharacterVisualRig2D visualRig;
+        [SerializeField] private CharacterModelView2D modelView;
 
         private AnimationCurve recoveryCurve;
         private float bodyDistance;
@@ -17,7 +18,7 @@ namespace JustTest.Game.Presentation
 
         private void Awake()
         {
-            ready = visualRig != null;
+            ready = visualRig != null || modelView != null;
             if (ready)
             {
                 return;
@@ -87,24 +88,39 @@ namespace JustTest.Game.Presentation
             {
                 visualRig.ClearFeedbackPose();
             }
+
+            if (modelView != null)
+            {
+                modelView.ClearFeedbackPose();
+            }
         }
 
         private void ApplyPose(float strength)
         {
-            float signedBodyOffset =
-                -attackDirection * visualRig.FacingDirection * bodyDistance * strength;
             float signedWeaponRotation = -weaponRotation * strength;
-            EvaluatedMotionPose2D pose = new EvaluatedMotionPose2D(
-                new Vector2(signedBodyOffset, 0f),
-                0f,
-                Vector2.one,
-                Vector2.zero,
-                signedWeaponRotation,
-                Vector2.one,
-                Vector2.zero,
-                signedWeaponRotation,
-                Vector2.one);
-            visualRig.SetFeedbackPose(pose);
+            if (visualRig != null)
+            {
+                float signedBodyOffset =
+                    -attackDirection * visualRig.FacingDirection * bodyDistance * strength;
+                EvaluatedMotionPose2D pose = new EvaluatedMotionPose2D(
+                    new Vector2(signedBodyOffset, 0f),
+                    0f,
+                    Vector2.one,
+                    Vector2.zero,
+                    signedWeaponRotation,
+                    Vector2.one,
+                    Vector2.zero,
+                    signedWeaponRotation,
+                    Vector2.one);
+                visualRig.SetFeedbackPose(pose);
+            }
+
+            if (modelView != null)
+            {
+                float signedModelOffset =
+                    -attackDirection * modelView.FacingDirection * bodyDistance * strength;
+                modelView.SetFeedbackPose(signedModelOffset, signedWeaponRotation);
+            }
         }
 
         private static float SanitizeNonNegative(float value)

@@ -61,6 +61,70 @@ namespace JustTest.Game.Run
         internal int CurrentWaveIndex => waveStateMachine?.CurrentWaveIndex ?? -1;
         internal int LivingEnemyCount => livingEnemies.Count;
 
+        internal bool TryCopyLivingEnemiesTo(List<CombatEnemyRuntime2D> destination)
+        {
+            if (destination == null)
+            {
+                return false;
+            }
+
+            destination.Clear();
+            if (!ready || !IsCombatActive)
+            {
+                return false;
+            }
+
+            foreach (CombatEnemyRuntime2D enemy in livingEnemies)
+            {
+                if (enemy != null && enemy.IsAlive && enemy.TargetingCollider != null)
+                {
+                    destination.Add(enemy);
+                }
+            }
+
+            return destination.Count > 0;
+        }
+
+        internal bool IsLivingEnemy(CombatEnemyRuntime2D enemy, int expectedLeaseId)
+        {
+            return ready &&
+                   IsCombatActive &&
+                   enemy != null &&
+                   enemy.LeaseId == expectedLeaseId &&
+                   enemy.IsAlive &&
+                   livingEnemies.Contains(enemy);
+        }
+
+        internal bool TryGetPlayerHorizontalLimits(out float minimumCenterX, out float maximumCenterX)
+        {
+            minimumCenterX = 0f;
+            maximumCenterX = 0f;
+            if (!ready || combatSurface == null || playerCollider == null)
+            {
+                return false;
+            }
+
+            Bounds surfaceBounds = combatSurface.bounds;
+            float playerExtentX = playerCollider.bounds.extents.x;
+            minimumCenterX = surfaceBounds.min.x + config.PlatformEdgePadding + playerExtentX;
+            maximumCenterX = surfaceBounds.max.x - config.PlatformEdgePadding - playerExtentX;
+            return minimumCenterX <= maximumCenterX;
+        }
+
+        internal bool IsPlayerTargetPathClear(Vector2 source, Vector2 destination)
+        {
+            if (!ready)
+            {
+                return false;
+            }
+
+            RaycastHit2D hit = Physics2D.Linecast(
+                source,
+                destination,
+                config.TargetObstructionLayers);
+            return hit.collider == null;
+        }
+
         private void Awake()
         {
             ready = ValidateReferences() && InitializeRuntimeServices();

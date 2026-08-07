@@ -10,6 +10,8 @@ namespace JustTest.Game.Combat
         private bool ready;
         private bool registered;
 
+        internal Collider2D Collider => hurtboxCollider;
+
         bool ICombatHurtbox.IsAvailable =>
             this != null &&
             isActiveAndEnabled &&

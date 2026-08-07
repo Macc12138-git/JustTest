@@ -45,6 +45,14 @@ namespace JustTest.Game.Weapons
 
         internal WeaponQteExecutionPhase Phase { get; private set; }
 
+        internal AttackPhase StrikePhase => strikeTimeline?.Phase ?? AttackPhase.Idle;
+
+        internal float StrikePhaseProgress => strikeTimeline?.PhaseProgress ?? 0f;
+
+        internal AttackDefinition CurrentAttackDefinition => activeStrike.Attack;
+
+        internal int CurrentAttackDirection => attackDirection;
+
         internal int CurrentStrikeIndex => currentStrikeIndex;
 
         internal WeaponDefinition PendingWeapon => IsExecuting ? activeSelection.Weapon : null;

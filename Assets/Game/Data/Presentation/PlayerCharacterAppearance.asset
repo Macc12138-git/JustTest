@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50a7c2e295b874c6183620edddc4685b, type: 3}
+  m_Name: PlayerCharacterAppearance
+  m_EditorClassIdentifier: 
+  useModelByDefault: 1
+  locomotionBlendDuration: 0.06
+  movementSpeedThreshold: 0.1
+  landingDuration: 0.12
+  controlledHitStunThreshold: 0.2
+  idleState: Idle
+  runState: Run
+  jumpState: Jump
+  fallState: Fall
+  landState: Land
+  rollState: Roll
+  hurtState: Hurt
+  controlledState: Controlled
+  deadState: Dead
+  qteApproachState: QteApproach
+  fallbackAttackState: AttackFallback
+  attackAnimations:
+  - attack: {fileID: 11400000, guid: 02a4b356e769b4e74b74360fc6a293d8, type: 2}
+    stateName: SwordAttack1
+    windupEndNormalized: 0.3
+    activeEndNormalized: 0.62
+  - attack: {fileID: 11400000, guid: 26b38d80921f0457a9779400fe2e110a, type: 2}
+    stateName: SwordAttack2
+    windupEndNormalized: 0.28
+    activeEndNormalized: 0.62
+  - attack: {fileID: 11400000, guid: 9cd23663c92dd48ff930e304ab79d1a9, type: 2}
+    stateName: SwordAttack3
+    windupEndNormalized: 0.38
+    activeEndNormalized: 0.68
+  - attack: {fileID: 11400000, guid: 4005f07cd17bd46ada193314f3e00aec, type: 2}
+    stateName: SwordSkill
+    windupEndNormalized: 0.34
+    activeEndNormalized: 0.72
+  - attack: {fileID: 11400000, guid: 1119612549fff4e2da63849f8b7283be, type: 2}
+    stateName: SwordQte
+    windupEndNormalized: 0.22
+    activeEndNormalized: 0.7
+  weaponPresentations:
+  - {fileID: 11400000, guid: ae2393e7ce04f49ee8ac40052630a77d, type: 2}
+  - {fileID: 11400000, guid: d9e640dcb79744fb394877d2d526b6da, type: 2}
+  - {fileID: 11400000, guid: d6648f34a3bde4b19ac5ec35d037d341, type: 2}

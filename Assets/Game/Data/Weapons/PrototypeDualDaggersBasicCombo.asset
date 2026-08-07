@@ -17,21 +17,63 @@ MonoBehaviour:
     hitboxOffset: {x: 0.75, y: 0}
     hitboxSize: {x: 0.95, y: 1.2}
     forwardSpeed: 4.5
-    movementPhases: 2
+    movementPhases: 3
+    targetAssistEnabled: 1
+    targetLockDistance: 2.8
+    targetRetainDistance: 3.7
+    targetRetentionDuration: 0.42
+    maximumTargetVerticalDifference: 0.7
+    targetOverlapDepth: 0.1
+    maximumAssistTravelDistance: 1.75
+    maximumWarpSpeed: 15
+    retargetThreshold: 0.72
+    rearTargetPenalty: 0.3
+    windupCorrectionStrength: 1
+    activeCorrectionStrength: 0.7
+    allowAutoTurn: 1
+    allowDirectionalRetarget: 1
     inputBufferDuration: 0.14
     chainStartProgress: 0.1
   - attack: {fileID: 11400000, guid: 5840dd0b9710c4d189cd9f0352ed9c21, type: 2}
     hitboxOffset: {x: 0.78, y: 0.05}
     hitboxSize: {x: 1, y: 1.15}
     forwardSpeed: 5
-    movementPhases: 2
+    movementPhases: 3
+    targetAssistEnabled: 1
+    targetLockDistance: 2.8
+    targetRetainDistance: 3.7
+    targetRetentionDuration: 0.42
+    maximumTargetVerticalDifference: 0.7
+    targetOverlapDepth: 0.1
+    maximumAssistTravelDistance: 1.8
+    maximumWarpSpeed: 15.5
+    retargetThreshold: 0.72
+    rearTargetPenalty: 0.3
+    windupCorrectionStrength: 1
+    activeCorrectionStrength: 0.72
+    allowAutoTurn: 1
+    allowDirectionalRetarget: 1
     inputBufferDuration: 0.14
     chainStartProgress: 0.08
   - attack: {fileID: 11400000, guid: e249ac5e44a5c4f498abc39727c9fba6, type: 2}
     hitboxOffset: {x: 0.82, y: -0.05}
     hitboxSize: {x: 1.05, y: 1.1}
     forwardSpeed: 5.2
-    movementPhases: 2
+    movementPhases: 3
+    targetAssistEnabled: 1
+    targetLockDistance: 2.9
+    targetRetainDistance: 3.8
+    targetRetentionDuration: 0.44
+    maximumTargetVerticalDifference: 0.7
+    targetOverlapDepth: 0.1
+    maximumAssistTravelDistance: 1.9
+    maximumWarpSpeed: 16
+    retargetThreshold: 0.74
+    rearTargetPenalty: 0.28
+    windupCorrectionStrength: 1
+    activeCorrectionStrength: 0.75
+    allowAutoTurn: 1
+    allowDirectionalRetarget: 1
     inputBufferDuration: 0.14
     chainStartProgress: 0.1
   - attack: {fileID: 11400000, guid: b79218113684e498e896d2de5c7a8daa, type: 2}
@@ -39,6 +81,20 @@ MonoBehaviour:
     hitboxSize: {x: 1.1, y: 1.5}
     forwardSpeed: 5.8
     movementPhases: 3
+    targetAssistEnabled: 1
+    targetLockDistance: 3
+    targetRetainDistance: 4
+    targetRetentionDuration: 0.46
+    maximumTargetVerticalDifference: 0.8
+    targetOverlapDepth: 0.12
+    maximumAssistTravelDistance: 2
+    maximumWarpSpeed: 17
+    retargetThreshold: 0.75
+    rearTargetPenalty: 0.25
+    windupCorrectionStrength: 1
+    activeCorrectionStrength: 0.78
+    allowAutoTurn: 1
+    allowDirectionalRetarget: 1
     inputBufferDuration: 0.16
     chainStartProgress: 0.35
   comboResetDelay: 0.28

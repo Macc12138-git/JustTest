@@ -29,6 +29,10 @@ namespace JustTest.Game.Enemies
 
         internal EliteEnemyController2D Controller => controller;
         internal override DamageReceiver DamageReceiver => damageReceiver;
+        internal override Collider2D TargetingCollider =>
+            IsAlive && hurtbox != null && hurtbox.isActiveAndEnabled
+                ? hurtbox.Collider
+                : null;
         internal override CombatHitFlash2D HitFlash => hitFlash;
         internal override Transform ImpactAnchor => impactAnchor;
         internal override MonoBehaviour[] FeedbackSources => feedbackSources;

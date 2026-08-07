@@ -11,6 +11,7 @@ namespace JustTest.Game.Enemies
 
         internal int ParticipantId => GetInstanceID();
         internal abstract DamageReceiver DamageReceiver { get; }
+        internal abstract Collider2D TargetingCollider { get; }
         internal abstract CombatHitFlash2D HitFlash { get; }
         internal abstract Transform ImpactAnchor { get; }
         internal abstract MonoBehaviour[] FeedbackSources { get; }

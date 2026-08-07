@@ -18,13 +18,41 @@ MonoBehaviour:
     hitboxSize: {x: 1.25, y: 1.35}
     forwardSpeed: 2.4
     movementPhases: 3
+    targetAssistEnabled: 1
+    targetLockDistance: 2.7
+    targetRetainDistance: 3.4
+    targetRetentionDuration: 0.48
+    maximumTargetVerticalDifference: 0.75
+    targetOverlapDepth: 0.12
+    maximumAssistTravelDistance: 1.45
+    maximumWarpSpeed: 10
+    retargetThreshold: 0.65
+    rearTargetPenalty: 0.4
+    windupCorrectionStrength: 1
+    activeCorrectionStrength: 0.55
+    allowAutoTurn: 1
+    allowDirectionalRetarget: 1
     inputBufferDuration: 0.2
     chainStartProgress: 0.25
   - attack: {fileID: 11400000, guid: 26b38d80921f0457a9779400fe2e110a, type: 2}
     hitboxOffset: {x: 0.95, y: 0.05}
     hitboxSize: {x: 1.35, y: 1.35}
     forwardSpeed: 2.8
-    movementPhases: 2
+    movementPhases: 3
+    targetAssistEnabled: 1
+    targetLockDistance: 2.7
+    targetRetainDistance: 3.4
+    targetRetentionDuration: 0.48
+    maximumTargetVerticalDifference: 0.75
+    targetOverlapDepth: 0.12
+    maximumAssistTravelDistance: 1.5
+    maximumWarpSpeed: 10.5
+    retargetThreshold: 0.65
+    rearTargetPenalty: 0.4
+    windupCorrectionStrength: 1
+    activeCorrectionStrength: 0.6
+    allowAutoTurn: 1
+    allowDirectionalRetarget: 1
     inputBufferDuration: 0.18
     chainStartProgress: 0.2
   - attack: {fileID: 11400000, guid: 9cd23663c92dd48ff930e304ab79d1a9, type: 2}
@@ -32,6 +60,20 @@ MonoBehaviour:
     hitboxSize: {x: 1.5, y: 1.55}
     forwardSpeed: 3.2
     movementPhases: 3
+    targetAssistEnabled: 1
+    targetLockDistance: 2.8
+    targetRetainDistance: 3.5
+    targetRetentionDuration: 0.5
+    maximumTargetVerticalDifference: 0.8
+    targetOverlapDepth: 0.14
+    maximumAssistTravelDistance: 1.6
+    maximumWarpSpeed: 11
+    retargetThreshold: 0.68
+    rearTargetPenalty: 0.4
+    windupCorrectionStrength: 1
+    activeCorrectionStrength: 0.65
+    allowAutoTurn: 1
+    allowDirectionalRetarget: 1
     inputBufferDuration: 0.22
     chainStartProgress: 0.55
   comboResetDelay: 0.38

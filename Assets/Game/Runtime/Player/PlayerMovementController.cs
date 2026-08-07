@@ -133,6 +133,8 @@ namespace JustTest.Game.Player
             }
         }
 
+        internal Collider2D BodyCollider => bodyCollider;
+
         public void ApplyExternalVelocity(Vector2 velocity)
         {
             if (!ready)
